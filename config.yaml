@@ -10,22 +10,22 @@ params:
     subtitle: |-
       A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP
       AND RELEASED UNDER THE CREATIVE COMMONS.
-    title: Hi, my name is Nisa
+    title: Nisa Buke Ozer
   blog: {}
   contact:
     address:
-      - city: City, ST 00000
+      - city: London
         country: UK
-        street: Street
+        street: Bakeer Street
         title: Address
     buttonClear: Clear
     buttonSend: Send message
     email:
-      - email: example@domain.com
+      - email: nozer.mam2022@london.edu
         title: Email
     enable: yes
     phone:
-      - phone: (000) 000-0000 x1234
+      - phone: (+44) 07463468958
         title: Phone
   custom_css: []
   custom_js: []
@@ -44,21 +44,21 @@ params:
     social:
       - icon: fa-twitter
         label: Twitter
-        url: https://www.twitter.com
+        url: https://www.twitter.com/nisabukeozer
       - icon: fa-facebook
         label: Facebook
-        url: https://www.facebook.com
+        url: https://www.facebook.com/nisabukeozer
       - icon: fa-instagram
         label: Instagram
-        url: https://www.instagram.com
+        url: https://www.instagram.com/nisabukeozer
       - icon: fa-github
         label: GitHub
-        url: https://www.github.com
+        url: https://www.github.com/nisabukeozer
       - icon: fa-linkedin
         label: LinkedIn
         url: https://www.linkedin.com
   image: ''
-  name: Your name
+  name: Nisa Buke Ozer
   navigation:
     button1:
       - name: Get Started
@@ -81,9 +81,9 @@ params:
   tiles:
     enable: yes
     showcase:
-      - image: pic01.jpg
-        subtitle: Ipsum Dolor Sit Amet
-        title: Aliquam
+      - image: sunset.JPG
+        subtitle: I do love sunsets
+        title: Sunset Photography
         url: blogs/aliquam
       - image: pic02.jpg
         subtitle: Feugiat Amet Tempus
