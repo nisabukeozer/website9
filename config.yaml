@@ -6,17 +6,16 @@ googleAnalytics: ''
 disqusShortname: ''
 params:
   banner:
-    buttonText: Get Started
+    buttonText: Start Exploring
     subtitle: |-
-      A RESPONSIVE SITE TEMPLATE DESIGNED BY HTML5 UP
-      AND RELEASED UNDER THE CREATIVE COMMONS.
+      Welcome to my portfolio!
     title: Nisa Buke Ozer
   blog: {}
   contact:
     address:
       - city: London
         country: UK
-        street: Bakeer Street
+        street: Baker Street
         title: Address
     buttonClear: Clear
     buttonSend: Send message
@@ -35,12 +34,12 @@ params:
     text: Please visit [this page](/)
   favicon: favicon.ico
   footer:
-    copyright: Company Name
+    copyright: Nisa Buke Ozer
     enable: yes
-    quicklinks:
-      - alt: HTML5 UP
-        text: 'Design: '
-        url: https://www.html5up.net
+    #quicklinks:
+     # - alt: HTML5 UP
+      #  text: 'Design: '
+       # url: https://www.html5up.net
     social:
       - icon: fa-twitter
         label: Twitter
@@ -56,7 +55,7 @@ params:
         url: https://www.github.com/nisabukeozer
       - icon: fa-linkedin
         label: LinkedIn
-        url: https://www.linkedin.com
+        url: https://www.linkedin.com/in/nisabukeozer/
   image: ''
   name: Nisa Buke Ozer
   navigation:
@@ -82,37 +81,32 @@ params:
     enable: yes
     showcase:
       - image: sunset.JPG
-        subtitle: I do love sunsets
-        title: Sunset Photography
+        subtitle: If you would like to know who I am...
+        title: About me!
         url: blogs/aliquam
       - image: pic02.jpg
-        subtitle: Feugiat Amet Tempus
-        title: Tempus
+        subtitle: My academic background
+        title: Education
         url: blogs/tempus
       - image: pic03.jpg
-        subtitle: Lorem Etiam Nullam
-        title: Magna
+        subtitle: About my work experiences in Istanbul and London
+        title: Professional Experience
         url: blogs/magna
       - image: pic04.jpg
-        subtitle: Nisl Sed Aliquam
-        title: Ipsum
+        subtitle: Data analytics projects that I worked on
+        title: Projects
         url: blogs/ipsum
       - image: pic05.jpg
-        subtitle: Ipsum Dolor Sit Amet
-        title: Consequat
+        subtitle: I especially love sunset photography!
+        title: Photography
         url: blogs/ipsum
       - image: pic06.jpg
-        subtitle: Feugiat Amet Tempus
-        title: Etiam
+        subtitle: Interesting tech news from around the globe
+        title: Tech Blog
         url: blogs/ipsum
-  two:
-    buttonText: Get Started
-    enable: yes
-    subtitle: "Nullam et orci eu lorem consequat tincidunt vivamus et sagittis libero.
-      \n    Mauris aliquet magna magna sed nunc rhoncus pharetra. \n    Pellentesque
-      condimentum sem. In efficitur ligula tate urna. Maecenas laoreet massa vel lacinia
-      pellentesque lorem ipsum dolor. \n    Nullam et orci eu lorem consequat tincidunt.
-      Vivamus et sagittis libero.\n    Mauris aliquet magna magna sed nunc rhoncus
-      amet pharetra et feugiat tempus."
-    title: Massa libero
-    url: blogs
+ # two:
+    #buttonText: Start Exploring
+    #enable: yes
+    #subtitle: "My portfolio is diverse. "
+    #title: Massa libero
+    #url: blogs

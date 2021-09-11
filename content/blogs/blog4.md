@@ -11,5 +11,5 @@ draft: false
 image: sunset2.JPG
 keywords: ""
 slug: aliquam
-title: Photography
+title: About me
 ---
