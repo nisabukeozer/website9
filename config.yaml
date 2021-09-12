@@ -83,7 +83,7 @@ params:
       - image: sunset.JPG
         subtitle: If you would like to know who I am...
         title: About me!
-        url: blogs/aliquam
+        url: blogs/about_me
       - image: pic02.jpg
         subtitle: My academic background
         title: Education
@@ -95,7 +95,7 @@ params:
       - image: pic04.jpg
         subtitle: Data analytics projects that I worked on
         title: Projects
-        url: blogs/ipsum
+        url: blogs/projects
       - image: pic05.jpg
         subtitle: I especially love sunset photography!
         title: Photography
