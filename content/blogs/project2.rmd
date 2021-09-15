@@ -1,0 +1,14 @@
+---
+categories:
+- ""
+- ""
+date: "2017-10-31T21:28:43-05:00"
+description: "Projects that I worked on"
+draft: false
+image: pic10.jpg
+keywords: ""
+slug: project2
+title: Project 2
+---
+
+Hello, this project is alive and breathing. 

@@ -1,0 +1,23 @@
+---
+categories:
+- ""
+- ""
+date: "2017-10-31T22:42:51-05:00"
+description: About me and my background
+draft: false
+image: graduation.JPG
+keywords: ""
+slug: cv
+title: Nisa Buke Ozer
+---
+
+**CV**
+
+
+
+```{r picture1, echo=FALSE, out.width="100%"}
+knitr::include_graphics("/img/cv.JPG", error = FALSE)
+```
+
+
+

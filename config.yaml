@@ -5,11 +5,11 @@ theme: forty
 googleAnalytics: ''
 disqusShortname: ''
 params:
-  banner:
+  banner: 
     buttonText: Start Exploring
     subtitle: |-
-      Welcome to my portfolio!
-    title: Nisa Buke Ozer
+       Here you can check out my projects portfolio that focus on analytics and optimisation
+    title: Welcome to my analytics portfolio!
   blog: {}
   contact:
     address:
@@ -80,30 +80,38 @@ params:
   tiles:
     enable: yes
     showcase:
-      - image: sunset.JPG
-        subtitle: If you would like to know who I am...
+      - image: druming.JPG
+        subtitle: Who am I anyways? 
         title: About me!
         url: blogs/about_me
-      - image: pic02.jpg
-        subtitle: My academic background
-        title: Education
-        url: blogs/tempus
+      - image: graduation.JPG
+        subtitle: My academic and professional background
+        title: CV and beyond
+        url: blogs/cv
       - image: pic03.jpg
-        subtitle: About my work experiences in Istanbul and London
-        title: Professional Experience
-        url: blogs/magna
+        subtitle: bla bla
+        title: Project1
+        url: blogs/project1
       - image: pic04.jpg
-        subtitle: Data analytics projects that I worked on
-        title: Projects
-        url: blogs/projects
+        subtitle: bla bla
+        title: Project2
+        url: blogs/project2
       - image: pic05.jpg
-        subtitle: I especially love sunset photography!
-        title: Photography
-        url: blogs/ipsum
+        subtitle: bla bla
+        title: Project3
+        url: blogs/project3
       - image: pic06.jpg
-        subtitle: Interesting tech news from around the globe
-        title: Tech Blog
-        url: blogs/ipsum
+        subtitle: bla bla
+        title: Project4
+        url: blogs/project4
+      - image: pic06.jpg
+        subtitle: bla
+        title: Project5
+        url: blogs/project5
+      - image: pic06.jpg
+        subtitle: bla 
+        title: Project6
+        url: blogs/project6
  # two:
     #buttonText: Start Exploring
     #enable: yes
