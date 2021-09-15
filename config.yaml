@@ -88,15 +88,15 @@ params:
         subtitle: My academic and professional background
         title: CV and beyond
         url: blogs/cv
-      - image: pic03.jpg
-        subtitle: bla bla
-        title: Project1
+      - image: directors.jpg
+        subtitle: Hypothesis Testing for their Mean Difference of IMDB Ratings 
+        title: Spielberg vs Burton 
         url: blogs/project1
-      - image: pic04.jpg
-        subtitle: bla bla
-        title: Project2
+      - image: brexit.jpg
+        subtitle: A Visualisation Challenge 
+        title: Brexit vs UK Political Parties
         url: blogs/project2
-      - image: pic05.jpg
+      - image: pic04.jpg
         subtitle: bla bla
         title: Project3
         url: blogs/project3

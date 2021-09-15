@@ -5,13 +5,147 @@ categories:
 date: "2017-10-31T22:26:09-05:00"
 description: Professional Experience
 draft: false
-image: pic09.jpg
+image: directors.jpg
 keywords: ""
 slug: project1
-title: Project 1
+title: Hypothesis testing for the difference between the mean IMDB ratings of Spielberg and Burton
 ---
 
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
-<p>Hey, this my first project and this tile is working.</p>
+<p>Exploring whether the mean IMDB rating for Steven Spielberg and Tim Burton</p>
+<p><em>H0</em> = <em>there is no difference between the mean IMBD ratings of Steven Spielberg and Tim Burton</em><br />
+<em>H1</em> = <em>there is a difference between the mean IMBD ratings of Steven Spielberg and Tim Burton</em></p>
+<p>First we need to load the data and take a look at its contents.</p>
+<pre class="r"><code>movies &lt;- read_csv(here::here(&quot;data&quot;, &quot;movies.csv&quot;))</code></pre>
+<pre><code>## Rows: 2961 Columns: 11</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (3): title, genre, director
+## dbl (8): year, duration, gross, budget, cast_facebook_likes, votes, reviews,...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>glimpse(movies) </code></pre>
+<pre><code>## Rows: 2,961
+## Columns: 11
+## $ title               &lt;chr&gt; &quot;Avatar&quot;, &quot;Titanic&quot;, &quot;Jurassic World&quot;, &quot;The Avenge…
+## $ genre               &lt;chr&gt; &quot;Action&quot;, &quot;Drama&quot;, &quot;Action&quot;, &quot;Action&quot;, &quot;Action&quot;, &quot;…
+## $ director            &lt;chr&gt; &quot;James Cameron&quot;, &quot;James Cameron&quot;, &quot;Colin Trevorrow…
+## $ year                &lt;dbl&gt; 2009, 1997, 2015, 2012, 2008, 1999, 1977, 2015, 20…
+## $ duration            &lt;dbl&gt; 178, 194, 124, 173, 152, 136, 125, 141, 164, 93, 1…
+## $ gross               &lt;dbl&gt; 760505847, 658672302, 652177271, 623279547, 533316…
+## $ budget              &lt;dbl&gt; 2.37e+08, 2.00e+08, 1.50e+08, 2.20e+08, 1.85e+08, …
+## $ cast_facebook_likes &lt;dbl&gt; 4834, 45223, 8458, 87697, 57802, 37723, 13485, 920…
+## $ votes               &lt;dbl&gt; 886204, 793059, 418214, 995415, 1676169, 534658, 9…
+## $ reviews             &lt;dbl&gt; 3777, 2843, 1934, 2425, 5312, 3917, 1752, 1752, 35…
+## $ rating              &lt;dbl&gt; 7.9, 7.7, 7.0, 8.1, 9.0, 6.5, 8.7, 7.5, 8.5, 7.2, …</code></pre>
+<p>Basic initial analysis to see how the mean ratings compare:</p>
+<pre class="r"><code>#initial observation table:
+ movies %&gt;% 
+  filter(director %in% c(&quot;Steven Spielberg&quot;, &quot;Tim Burton&quot;)) %&gt;% 
+  group_by(director) %&gt;% 
+  summarise(n = n(),
+            mean = mean(rating),
+            sd = sd(rating))  </code></pre>
+<pre><code>## # A tibble: 2 × 4
+##   director             n  mean    sd
+##   &lt;chr&gt;            &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 Steven Spielberg    23  7.57 0.695
+## 2 Tim Burton          16  6.93 0.749</code></pre>
+<p><strong>Comparing confidence intervals:</strong></p>
+<pre class="r"><code>#creating a confidence interval
+compare &lt;- movies %&gt;% 
+  filter(director %in% c(&quot;Tim Burton&quot;, &quot;Steven Spielberg&quot;))   %&gt;% 
+  group_by(director) %&gt;% 
+   summarise(mean = round(mean(rating), 2),
+              n = count(director),
+              sd = sd(rating),
+              t_critical = qt(0.975, n - 1),
+              se = sd / sqrt(n),
+              margin_of_error = t_critical * se,
+              low_CI= round(mean - margin_of_error, 2) ,
+              high_CI= round(mean + margin_of_error, 2)
+              )%&gt;%
+  mutate(director = factor(director, levels = c(&quot;Tim Burton&quot;,&quot;Steven Spielberg&quot;)))
+
+#graphing the confidence intervals
+graph &lt;- ggplot(compare, aes(colour=director)) +
+  geom_errorbar(aes(xmin = low_CI, xmax = high_CI, y= director), width = 0.1, size = 1.5)  +
+  scale_color_manual(values = c(&quot;skyblue&quot;,&quot;tomato&quot;))+
+  geom_point(aes(x=mean, y=director), size = 3 ) +
+  labs(title=&quot;Do Spielberg and Burton have the same IMDB ratings?&quot;,
+       subtitle=&quot;95% confidence intervals overlap&quot;,
+       x=&quot;Mean IMDB Rating&quot;,
+       y =&quot; &quot;) +
+  geom_text(aes(label = low_CI, x=low_CI, y=director), size = 4, color=&quot;black&quot;, hjust = 1, vjust = 0, nudge_x = 0.05, nudge_y = 0.08) +
+  geom_text(aes(label = high_CI, x=high_CI, y=director),size = 4, color=&quot;black&quot;, hjust = 1, vjust = 0, nudge_x = 0.05, nudge_y = 0.08) +
+  geom_text(aes(label = mean, mean, y=director), size = 6, color=&quot;black&quot;, hjust = 1, vjust = 0, nudge_x = 0.05, nudge_y = 0.08)+
+geom_rect( mapping=aes(xmin= 7.27, xmax= 7.33, ymin=0, ymax=3), color=&quot;lightgrey&quot;, alpha=0.2) +
+  theme_bw()
+  
+  
+graph +theme(legend.position = &quot;none&quot;) </code></pre>
+<p><img src="/blogs/project1_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+<p><strong>T-test</strong></p>
+<pre class="r"><code>compare2 &lt;- movies %&gt;% 
+  filter(director %in% c(&quot;Steven Spielberg&quot;, &quot;Tim Burton&quot;)) 
+
+t.test(rating ~ director, data = compare2)</code></pre>
+<pre><code>## 
+##  Welch Two Sample t-test
+## 
+## data:  rating by director
+## t = 2.7144, df = 30.812, p-value = 0.01078
+## alternative hypothesis: true difference in means between group Steven Spielberg and group Tim Burton is not equal to 0
+## 95 percent confidence interval:
+##  0.1596624 1.1256637
+## sample estimates:
+## mean in group Steven Spielberg       mean in group Tim Burton 
+##                       7.573913                       6.931250</code></pre>
+<p><strong>Hypothesis testing</strong></p>
+<pre class="r"><code>set.seed(1234)
+
+obs_diff &lt;- compare2 %&gt;%
+  specify(rating ~ director) %&gt;%
+  calculate(stat = &quot;diff in means&quot;, order = c(&quot;Steven Spielberg&quot;, &quot;Tim Burton&quot;))
+
+obs_diff</code></pre>
+<pre><code>## Response: rating (numeric)
+## Explanatory: director (factor)
+## # A tibble: 1 × 1
+##    stat
+##   &lt;dbl&gt;
+## 1 0.643</code></pre>
+<pre class="r"><code>#hypothesis testing with infer:
+
+  null_dist_movies &lt;- compare2 %&gt;%
+  # specify variables
+  specify(rating ~ director) %&gt;%
+  
+  # assume independence, i.e, there is no difference
+  hypothesize(null = &quot;independence&quot;) %&gt;%
+  
+  # generate 1000 reps, of type &quot;permute&quot;
+  generate(reps = 1000, type = &quot;permute&quot;) %&gt;%
+  
+  # calculate statistic of difference, namely &quot;diff in means&quot;
+  calculate(stat = &quot;diff in means&quot;, order = c(&quot;Steven Spielberg&quot;, &quot;Tim Burton&quot;))
+  
+#visualise the null distribution 
+null_dist_movies %&gt;% visualize() +
+  shade_p_value(obs_stat = obs_diff, direction = &quot;two-sided&quot;)</code></pre>
+<p><img src="/blogs/project1_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>null_dist_movies %&gt;%
+  get_p_value(obs_stat = obs_diff, direction = &quot;two_sided&quot;)</code></pre>
+<pre><code>## # A tibble: 1 × 1
+##   p_value
+##     &lt;dbl&gt;
+## 1   0.008</code></pre>
+<pre class="r"><code>null_dist_movies %&gt;%
+  get_p_value(obs_stat = obs_diff, direction = &quot;two_sided&quot;)</code></pre>
+<pre><code>## # A tibble: 1 × 1
+##   p_value
+##     &lt;dbl&gt;
+## 1   0.008</code></pre>

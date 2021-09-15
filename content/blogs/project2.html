@@ -5,13 +5,72 @@ categories:
 date: "2017-10-31T21:28:43-05:00"
 description: "Projects that I worked on"
 draft: false
-image: pic10.jpg
+image: brexitt.jpg
 keywords: ""
 slug: project2
-title: Project 2
+title: A Visualisation Challenge -> Brexit Leave Share Votes vs UK Political Parties
 ---
 
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
-<p>Hello, this project is alive and breathing.</p>
+<p><strong>Loading and taking a quick look at the data</strong></p>
+<pre class="r"><code>brexit &lt;- read_csv(here::here(&quot;data&quot;, &quot;brexit_results.csv&quot;))</code></pre>
+<pre><code>## Rows: 632 Columns: 11</code></pre>
+<pre><code>## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr  (1): Seat
+## dbl (10): con_2015, lab_2015, ld_2015, ukip_2015, leave_share, born_in_uk, m...</code></pre>
+<pre><code>## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre class="r"><code>glimpse(brexit)</code></pre>
+<pre><code>## Rows: 632
+## Columns: 11
+## $ Seat        &lt;chr&gt; &quot;Aldershot&quot;, &quot;Aldridge-Brownhills&quot;, &quot;Altrincham and Sale W…
+## $ con_2015    &lt;dbl&gt; 50.592, 52.050, 52.994, 43.979, 60.788, 22.418, 52.454, 22…
+## $ lab_2015    &lt;dbl&gt; 18.333, 22.369, 26.686, 34.781, 11.197, 41.022, 18.441, 49…
+## $ ld_2015     &lt;dbl&gt; 8.824, 3.367, 8.383, 2.975, 7.192, 14.828, 5.984, 2.423, 1…
+## $ ukip_2015   &lt;dbl&gt; 17.867, 19.624, 8.011, 15.887, 14.438, 21.409, 18.821, 21.…
+## $ leave_share &lt;dbl&gt; 57.89777, 67.79635, 38.58780, 65.29912, 49.70111, 70.47289…
+## $ born_in_uk  &lt;dbl&gt; 83.10464, 96.12207, 90.48566, 97.30437, 93.33793, 96.96214…
+## $ male        &lt;dbl&gt; 49.89896, 48.92951, 48.90621, 49.21657, 48.00189, 49.17185…
+## $ unemployed  &lt;dbl&gt; 3.637000, 4.553607, 3.039963, 4.261173, 2.468100, 4.742731…
+## $ degree      &lt;dbl&gt; 13.870661, 9.974114, 28.600135, 9.336294, 18.775591, 6.085…
+## $ age_18to24  &lt;dbl&gt; 9.406093, 7.325850, 6.437453, 7.747801, 5.734730, 8.209863…</code></pre>
+<pre class="r"><code>head(brexit)</code></pre>
+<pre><code>## # A tibble: 6 × 11
+##   Seat          con_2015 lab_2015 ld_2015 ukip_2015 leave_share born_in_uk  male
+##   &lt;chr&gt;            &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;      &lt;dbl&gt; &lt;dbl&gt;
+## 1 Aldershot         50.6     18.3    8.82     17.9         57.9       83.1  49.9
+## 2 Aldridge-Bro…     52.0     22.4    3.37     19.6         67.8       96.1  48.9
+## 3 Altrincham a…     53.0     26.7    8.38      8.01        38.6       90.5  48.9
+## 4 Amber Valley      44.0     34.8    2.98     15.9         65.3       97.3  49.2
+## 5 Arundel and …     60.8     11.2    7.19     14.4         49.7       93.3  48.0
+## 6 Ashfield          22.4     41.0   14.8      21.4         70.5       97.0  49.2
+## # … with 3 more variables: unemployed &lt;dbl&gt;, degree &lt;dbl&gt;, age_18to24 &lt;dbl&gt;</code></pre>
+<p>Graph:</p>
+<pre class="r"><code>brexit &lt;- brexit %&gt;% 
+ 
+select(c(&quot;con_2015&quot;, &quot;lab_2015&quot;, &quot;ld_2015&quot;, &quot;ukip_2015&quot;, &quot;leave_share&quot;))
+
+names(brexit) &lt;- c(&quot;Conservative&quot; ,&quot;Labour&quot;, &quot;Lib_Dems&quot;, &quot;UKIP&quot;, &quot;Leave_Share&quot;)
+
+
+long_brexit &lt;- pivot_longer(brexit, c(&quot;Conservative&quot; ,&quot;Labour&quot;, &quot;Lib_Dems&quot;, &quot;UKIP&quot;), names_to=&quot;party&quot;)
+
+ggplot(long_brexit, aes(x = value, y = Leave_Share, color=party ) ) +
+  geom_smooth(size=0.7, method = &quot;lm&quot; ) +
+  geom_point(size=0.7, alpha = 0.3) +
+  labs( title = &quot;How political affiliation translated to Brexit voting&quot;,
+          x = &quot;Party % in the UK 2015 general election&quot;,
+          y = &quot;Leave % in the UK 2016 Brexit referendum&quot;) +
+  theme_light() +
+  theme(legend.position = &quot;bottom&quot;,
+        legend.title = element_blank(),
+        plot.title = element_text(face = &quot;bold&quot;, size = rel(1)),
+        axis.title = element_text(size = rel(0.8)))+
+  scale_colour_manual(labels =  c(&quot;Conservative&quot; ,&quot;Labour&quot;, &quot;Lib Dems&quot;, &quot;UKIP&quot;, &quot;Leave Share&quot;) ,
+                      values = c(&quot;#0087DC&quot;,&quot;#E4003B&quot;, &quot;#FAA61A&quot;, &quot;#EFE600&quot;))</code></pre>
+<pre><code>## `geom_smooth()` using formula &#39;y ~ x&#39;</code></pre>
+<p><img src="/blogs/project2_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>

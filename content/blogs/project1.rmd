@@ -5,11 +5,137 @@ categories:
 date: "2017-10-31T22:26:09-05:00"
 description: Professional Experience
 draft: false
-image: pic09.jpg
+image: directors.jpg
 keywords: ""
 slug: project1
-title: Project 1
+title: Hypothesis testing for the difference between the mean IMDB ratings of Spielberg and Burton
 ---
 
-Hey, this my first project and this tile is working. 
+
+```{r load-libraries, warning = FALSE, message = FALSE, echo=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(GGally)
+library(readxl)
+library(here)
+library(skimr)
+library(janitor)
+library(broom)
+library(tidyquant)
+library(infer)
+library(openintro)
+```
+
+
+Exploring whether the mean IMDB rating for Steven Spielberg and Tim Burton
+
+*H0* = *there is no difference between the mean IMBD ratings of Steven Spielberg and Tim Burton* \
+*H1* = *there is a difference between the mean IMBD ratings of Steven Spielberg and Tim Burton*
+
+First we need to load the data and take a look at its contents.
+```{r}
+movies <- read_csv(here::here("data", "movies.csv"))
+glimpse(movies) 
+```
+
+Basic initial analysis to see how the mean ratings compare:
+```{r}
+
+#initial observation table:
+ movies %>% 
+  filter(director %in% c("Steven Spielberg", "Tim Burton")) %>% 
+  group_by(director) %>% 
+  summarise(n = n(),
+            mean = mean(rating),
+            sd = sd(rating))  
+```
+
+
+
+**Comparing confidence intervals:**
+```{r}
+#creating a confidence interval
+compare <- movies %>% 
+  filter(director %in% c("Tim Burton", "Steven Spielberg"))   %>% 
+  group_by(director) %>% 
+   summarise(mean = round(mean(rating), 2),
+              n = count(director),
+              sd = sd(rating),
+              t_critical = qt(0.975, n - 1),
+              se = sd / sqrt(n),
+              margin_of_error = t_critical * se,
+              low_CI= round(mean - margin_of_error, 2) ,
+              high_CI= round(mean + margin_of_error, 2)
+              )%>%
+  mutate(director = factor(director, levels = c("Tim Burton","Steven Spielberg")))
+
+#graphing the confidence intervals
+graph <- ggplot(compare, aes(colour=director)) +
+  geom_errorbar(aes(xmin = low_CI, xmax = high_CI, y= director), width = 0.1, size = 1.5)  +
+  scale_color_manual(values = c("skyblue","tomato"))+
+  geom_point(aes(x=mean, y=director), size = 3 ) +
+  labs(title="Do Spielberg and Burton have the same IMDB ratings?",
+       subtitle="95% confidence intervals overlap",
+       x="Mean IMDB Rating",
+       y =" ") +
+  geom_text(aes(label = low_CI, x=low_CI, y=director), size = 4, color="black", hjust = 1, vjust = 0, nudge_x = 0.05, nudge_y = 0.08) +
+  geom_text(aes(label = high_CI, x=high_CI, y=director),size = 4, color="black", hjust = 1, vjust = 0, nudge_x = 0.05, nudge_y = 0.08) +
+  geom_text(aes(label = mean, mean, y=director), size = 6, color="black", hjust = 1, vjust = 0, nudge_x = 0.05, nudge_y = 0.08)+
+geom_rect( mapping=aes(xmin= 7.27, xmax= 7.33, ymin=0, ymax=3), color="lightgrey", alpha=0.2) +
+  theme_bw()
+  
+  
+graph +theme(legend.position = "none") 
+```
+
+**T-test**
+```{r}
+compare2 <- movies %>% 
+  filter(director %in% c("Steven Spielberg", "Tim Burton")) 
+
+t.test(rating ~ director, data = compare2)
+```
+
+**Hypothesis testing**
+
+```{r}
+
+set.seed(1234)
+
+obs_diff <- compare2 %>%
+  specify(rating ~ director) %>%
+  calculate(stat = "diff in means", order = c("Steven Spielberg", "Tim Burton"))
+
+obs_diff
+
+#hypothesis testing with infer:
+
+  null_dist_movies <- compare2 %>%
+  # specify variables
+  specify(rating ~ director) %>%
+  
+  # assume independence, i.e, there is no difference
+  hypothesize(null = "independence") %>%
+  
+  # generate 1000 reps, of type "permute"
+  generate(reps = 1000, type = "permute") %>%
+  
+  # calculate statistic of difference, namely "diff in means"
+  calculate(stat = "diff in means", order = c("Steven Spielberg", "Tim Burton"))
+  
+#visualise the null distribution 
+null_dist_movies %>% visualize() +
+  shade_p_value(obs_stat = obs_diff, direction = "two-sided")
+
+null_dist_movies %>%
+  get_p_value(obs_stat = obs_diff, direction = "two_sided")
+
+
+```
+
+```{r}
+null_dist_movies %>%
+  get_p_value(obs_stat = obs_diff, direction = "two_sided")
+```
 

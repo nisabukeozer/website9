@@ -5,10 +5,59 @@ categories:
 date: "2017-10-31T21:28:43-05:00"
 description: "Projects that I worked on"
 draft: false
-image: pic10.jpg
+image: brexitt.jpg
 keywords: ""
 slug: project2
-title: Project 2
+title: A Visualisation Challenge -> Brexit Leave Share Votes vs UK Political Parties
 ---
 
-Hello, this project is alive and breathing. 
+```{r load-libraries, warning = FALSE, message = FALSE, echo=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(GGally)
+library(readxl)
+library(here)
+library(skimr)
+library(janitor)
+library(broom)
+library(tidyquant)
+library(infer)
+library(openintro)
+```
+
+**Loading and taking a quick look at the data**
+```{r}
+brexit <- read_csv(here::here("data", "brexit_results.csv"))
+glimpse(brexit)
+head(brexit)
+```
+
+Graph:
+```{r}
+brexit <- brexit %>% 
+ 
+select(c("con_2015", "lab_2015", "ld_2015", "ukip_2015", "leave_share"))
+
+names(brexit) <- c("Conservative" ,"Labour", "Lib_Dems", "UKIP", "Leave_Share")
+
+
+long_brexit <- pivot_longer(brexit, c("Conservative" ,"Labour", "Lib_Dems", "UKIP"), names_to="party")
+
+ggplot(long_brexit, aes(x = value, y = Leave_Share, color=party ) ) +
+  geom_smooth(size=0.7, method = "lm" ) +
+  geom_point(size=0.7, alpha = 0.3) +
+  labs( title = "How political affiliation translated to Brexit voting",
+          x = "Party % in the UK 2015 general election",
+          y = "Leave % in the UK 2016 Brexit referendum") +
+  theme_light() +
+  theme(legend.position = "bottom",
+        legend.title = element_blank(),
+        plot.title = element_text(face = "bold", size = rel(1)),
+        axis.title = element_text(size = rel(0.8)))+
+  scale_colour_manual(labels =  c("Conservative" ,"Labour", "Lib Dems", "UKIP", "Leave Share") ,
+                      values = c("#0087DC","#E4003B", "#FAA61A", "#EFE600"))
+```
+
+
+
