@@ -94,11 +94,11 @@ params:
         url: blogs/project1
       - image: brexit.jpg
         subtitle: A Visualisation Challenge 
-        title: Brexit vs UK Political Parties
+        title: Brexit vs Political Affiliation
         url: blogs/project2
-      - image: pic04.jpg
-        subtitle: bla bla
-        title: Project3
+      - image: climate.JPG
+        subtitle: In-depth Analysis of Temperature Anamolies
+        title: Climate Change and Temperature Anamolies
         url: blogs/project3
       - image: pic06.jpg
         subtitle: bla bla
