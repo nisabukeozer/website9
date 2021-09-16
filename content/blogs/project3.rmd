@@ -11,8 +11,6 @@ slug: project3
 title: Project 3
 ---
 
-hiiiiii
-
 
 ```{r load-libraries, warning = FALSE, message = FALSE, echo=FALSE}
 library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages

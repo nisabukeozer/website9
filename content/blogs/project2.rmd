@@ -8,7 +8,7 @@ draft: false
 image: brexitt.jpg
 keywords: ""
 slug: project2
-title: A Visualisation Challenge -> Brexit Leave Share Votes vs UK Political Parties
+title: Brexit Vote Analysis
 ---
 
 ```{r load-libraries, warning = FALSE, message = FALSE, echo=FALSE}
@@ -25,17 +25,116 @@ library(tidyquant)
 library(infer)
 library(openintro)
 ```
+We will first have a look at the results of the 2016 Brexit vote in the UK. 
+
+
+The data comes from [Elliott Morris](https://www.thecrosstab.com/), who cleaned it and made it available through his [DataCamp class on analysing election and polling data in R](https://www.datacamp.com/courses/analyzing-election-and-polling-data-in-r).
+
+Our main outcome variable (or y) is `leave_share`, which is the percent of votes cast in favour of Brexit, or leaving the EU. Each row is a UK [parliament constituency](https://en.wikipedia.org/wiki/United_Kingdom_Parliament_constituencies).
+
+To get a sense of the spread, or distribution, of the data, we can plot a histogram, a density plot, and the empirical cumulative distribution function of the leave % in all constituencies.
+
+And then I will create a political affiliation vs UK leave share vote graph. 
+
 
 **Loading and taking a quick look at the data**
 ```{r}
-brexit <- read_csv(here::here("data", "brexit_results.csv"))
-glimpse(brexit)
-head(brexit)
+brexit_results <- read_csv(here::here("data", "brexit_results.csv"))
+glimpse(brexit_results)
+head(brexit_results) #displaying the first five rows of the data
 ```
 
-Graph:
+
+
+# Brexit vote analysis
+
+
+```{r brexit_histogram, warning=FALSE, message=FALSE}
+
+# histogram
+histogram <- ggplot(brexit_results, aes(x = leave_share)) +
+  geom_histogram(binwidth = 2.5)  +
+   labs(title = "Histogram Plot of Leave Share",
+        subtitle = "Leave Share: Percent of votes in cast in favour of Brexit",
+       x = "Leave Share",
+       y = "Count ") +
+   NULL
+histogram
+  
+# density plot-- think smoothed histogram
+density_plot <- ggplot(brexit_results, aes(x = leave_share)) +
+  geom_density() 
+
+density_plot2 <- density_plot +
+   labs(title = "Cumulative Density Distribution Plot of Leave Share",
+        subtitle = "Leave Share: Percent of votes in cast in favour of Brexit", 
+       x = "Leave Share ",
+       y = "Density ") +
+   NULL
+density_plot2
+
+# The empirical cumulative distribution function (ECDF) 
+ecdf <- ggplot(brexit_results, aes(x = leave_share)) +
+  stat_ecdf(geom = "step", pad = FALSE) +
+  scale_y_continuous(labels = scales::percent)
+
+ecdf2 <- ecdf + 
+  labs(title= "Empirical Cumulative Distribution Function of Leave Share",
+       x = "Leave Share: Percent of votes in cast in favour of Brexit",
+       y= "Cumulative Probability ") +
+  NULL
+ecdf2 
+
+
+  
+```
+
+One common explanation for the Brexit outcome was fear of immigration and opposition to the EU's more open border policy. We can check the relationship (or correlation) between the proportion of native born residents (`born_in_uk`) in a constituency and its `leave_share`. To do this, let us get the correlation between the two variables
+
+```{r brexit_immigration_correlation}
+brexit_results %>% 
+  select(leave_share, born_in_uk) %>% 
+  cor() 
+```
+
+The correlation is almost 0.5, which shows that the two variables are positively correlated.
+
+We can also create a scatterplot between these two variables using `geom_point`. We also add the best fit line, using `geom_smooth(method = "lm")`.
+
+```{r brexit_immigration_plot}
+immigrationPlot <- ggplot(brexit_results, aes(x = born_in_uk, y = leave_share)) +
+  geom_point(alpha=0.3) +
+  
+  # add a smoothing line, and use method="lm" to get the best straight-line
+  geom_smooth(method = "lm") + 
+  
+  # use a white background and frame the plot with a black box
+  theme_bw() +
+  labs(title="Scatter Plot of Leave Share vs Born UK",
+       subtitle= "Born UK: Percentage of voters that were born in the UK",
+       x = "Leave Share ",
+       y ="Born in UK ")
+
+immigrationPlot
+```
+
+
+You have the code for the plots, I would like you to revisit all of them and use the `labs()` function to add an informative title, subtitle, and axes titles to all plots.
+
+What can you say about the relationship shown above? Again, don't just say what's happening in the graph. Tell some sort of story and speculate about the differences in the patterns.
+ > Type your answer after, and outside, this blockquote.
+
+First of all, the histogram of the leave share is slighlt left skewed, which means that voters more likely to vote in favour of leaving the EU. 
+
+The 0.5 correlation between the leave share and born in the UK, shows that there is a  positive correlation between the percentage of pro-Brexit voters and percentage of UK born voters. According to the scatter plot of Leave Share vs Born UK, we also can see that there is an obvious positive trend between Born in UK and Leave Share. This makes sense since, people who do not support immigration are more likely to be UK born and bred people rather than immigrants. 
+
+The upper left side of the graph is almost empty. This emptiness is kind of expected since that area represents UK born and bred majority whose leave share is relatively low. While the upper right area is fully crowded, in those area the born in the UK percentage is relatively higher while the leave share is also higher, which represents the general trend in the country.   
+
+
+
+# Political Affiliation and Leave_Share Graph:
 ```{r}
-brexit <- brexit %>% 
+brexit <- brexit_results %>% 
  
 select(c("con_2015", "lab_2015", "ld_2015", "ukip_2015", "leave_share"))
 
@@ -58,6 +157,3 @@ ggplot(long_brexit, aes(x = value, y = Leave_Share, color=party ) ) +
   scale_colour_manual(labels =  c("Conservative" ,"Labour", "Lib Dems", "UKIP", "Leave Share") ,
                       values = c("#0087DC","#E4003B", "#FAA61A", "#EFE600"))
 ```
-
-
-

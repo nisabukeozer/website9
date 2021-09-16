@@ -100,9 +100,9 @@ params:
         subtitle: In-depth Analysis of Temperature Anamolies
         title: Climate Change and Temperature Anamolies
         url: blogs/project3
-      - image: pic06.jpg
+      - image: gapminder.jpg
         subtitle: bla bla
-        title: Project4
+        title: Gapminder
         url: blogs/project4
       - image: pic06.jpg
         subtitle: bla

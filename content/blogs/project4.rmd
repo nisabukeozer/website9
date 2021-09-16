@@ -8,9 +8,117 @@ draft: false
 image: pic08.jpg
 keywords: ""
 slug: project4
-title: Project 4
+title: Gapminder Analysis
 ---
 
+```{r load-libraries, echo=FALSE, message=FALSE, warning=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(gapminder)  # gapminder dataset
+library(here)
+library(janitor)
+```
 
-Hello 
-Please work
+#`gapminder` country comparison
+
+You have seen the `gapminder` dataset that has data on life expectancy, population, and GDP per capita for 142 countries from 1952 to 2007. To get a glimpse of the dataframe, namely to see the variable names, variable types, etc., we use the `glimpse` function. We also want to have a look at the first 20 rows of data.
+
+```{r}
+glimpse(gapminder)
+
+head(gapminder, 20) # look at the first 20 rows of the dataframe
+
+```
+
+How did life expectancy has changed over the years for the `country` and the `continent` I come from?
+
+I have created the `country_data` and `continent_data` with the code below.
+
+```{r}
+country_data <- gapminder %>% 
+            filter(country == "Turkey") 
+
+head(country_data)
+continent_data <- gapminder %>% 
+            filter(continent == "Europe")
+
+head(continent_data)
+```
+
+First, create a plot of life expectancy over time for the single country you chose. Map `year` on the x-axis, and `lifeExp` on the y-axis. You should also use `geom_point()` to see the actual data points and `geom_smooth(se = FALSE)` to plot the underlying trendlines. You need to remove the comments **\#** from the lines below for your code to run.
+
+
+```{r, lifeExp_one_country}
+plot1 <- ggplot(data = country_data , mapping = aes(x = year, y = lifeExp))+
+   geom_point() +
+   geom_smooth(se = FALSE)+
+   NULL 
+
+plot1
+```
+
+Next we need to add a title. Create a new plot, or extend plot1, using the `labs()` function to add an informative title to the plot.
+
+```{r, lifeExp_one_country_with_label}
+ plot1<- plot1 +
+   labs(title = " Life Expactancy Over Time in Turkey ",
+       x = " Year ",
+       y = " Life Expectancy ") +
+   NULL
+
+
+ plot1
+```
+
+Secondly, produce a plot for all countries in the *continent* you come from. (Hint: map the `country` variable to the colour aesthetic. You also want to map `country` to the `group` aesthetic, so all points for each country are grouped together).
+
+```{r lifeExp_one_continent}
+ ggplot(continent_data, mapping = aes(x = year , y = lifeExp , colour = country, group = country)) +
+   geom_point() + 
+   geom_smooth(se = FALSE) +
+   NULL
+```
+
+
+Finally, using the original `gapminder` data, produce a life expectancy over time graph, grouped (or faceted) by continent. We will remove all legends, adding the `theme(legend.position="none")` in the end of our ggplot.
+
+```{r lifeExp_facet_by_continent}
+ ggplot(gapminder , mapping = aes(x = year , y = lifeExp, colour = continent))+
+   geom_point() +
+   geom_smooth(se = FALSE) +
+   facet_wrap(~continent) +
+   theme(legend.position="none") + #remove all legends
+   NULL
+```
+
+Given these trends, what can you say about life expectancy since 1952? Again, don't just say what's happening in the graph. Tell some sort of story and speculate about the differences in the patterns.
+
+> Type your answer after this blockquote.
+
+## A positive life expectency trend is evident in all continents
+
+First of all, generally speaking, for every, the life expectancy over years has been demonstrating a **positive trend**. This positive trend in life expectancy can be tied to the developments in medicine, biomedical engineering and technology in the world.
+
+## Africa's stagnation after the 1990s
+
+Africa's graph is especially interesting since the life expectancy starts of with an average of 40 years of age, increases to 50 and shows a stagnation after 1990. Further research can be conducted to understand what happened in 1990, or how the **resources** have been negatively affected. As far as I know and after doing a very little confirmation research, Europe and Americas had been contributing to Africa's well being by performing concerts and help packages before the 1990s and they had stopped doing so after the 90s. This might be one of the reasons and should be further investigated. 
+
+## Increase in longevity from 1950s to 2007  
+
+**Oceania** is the continent with the highest longevity. Oceania starts off well with an average of 70 years of age and its average longevity is almost 80 or a bit more. Since there are not many countries in Oceania, its graph is fairly uniform and does not consist of many different data points. Europe is following Ocenia in longevity, starting off with 65 and increasing up to 80 years of age. Americas is the third in the longevity trend ranking, followed by Asia and Africa. The reason for the difference among the longevity between continents might be related to the overall **GDP** for each continent as well as the **advances in medicine and technology**. 
+
+The average approximated increase in each continent from 1950 to 2007 is as follows:
+
+* Africa: 40 to 54  -> increase by ~14
+* Americas: 54 to 74 -> increase by ~20
+* Asia 47 to 70 -> increase by ~23
+* Europe 63 to 77 -> increased by ~14
+* Oceania: 70 to 80 -> increased by ~10
+
+
+Approximately, **Asia and Americas** are the continents that showed **the most significant increase in longevity** from the 1950s to 2007 compared to the other continents. This makes sense since the world have been witnessing **a technology and production boom** from the Americas and Asia for a very long time. 
+
+## About the variations in each continent
+
+Europe's dataset is the one that caught my eye initially. There is not a very significant variance among the different European countries. **But** there seems to be an outlier country in the graph, and not surprisingly it is my country **Turkey**. It has been always debated whether Turkey belongs to Europe or Asia. Since this data set has been relatively not so new, it is recorded in Europe, as it was the case during my childhood before all the political unrest that started with the new government: aka *Geopolitics*. Since Turkey's resources and the GDP are not as high as the other European countries, Turkey's data points stick out. If the data recorders had kept recording data after the 2010s, Turkey would have been probably moved to Asia. And it might fit in well with the high variance of longevity in Asian countries. -Or we should all give up and create a Euroasia factor in the continent feature and add Turkey and Russia there. :-) -
+
+Asia shows the highest variance among all the continents, since the **GDP** is not as uniform throughout the Asian countries unlike the European countries. Americans and Africas also show a high variance since there are many different countries with varying GDPs and technologies advancements in Africa, Americas and Asia. 
