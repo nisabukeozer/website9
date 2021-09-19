@@ -8,30 +8,27 @@ draft: false
 image: druming.JPG
 keywords: ""
 slug: about_me
-title: About Nisa Buke Ozer
+title: About Nisa Ozer
 ---
 
 
-![Nisa Büke Özer, Istanbul, March 2021](https://scontent.fbhx4-2.fna.fbcdn.net/v/t1.6435-1/c4.112.546.546a/s320x320/164696109_10225213883681334_3594324972170653664_n.jpg?_nc_cat=106&ccb=1-5&_nc_sid=7206a8&_nc_ohc=1nBdzTRjKScAX9MgCf6&_nc_ht=scontent.fbhx4-2.fna&oh=349a2be9ffbad4a71d267ec3fa8750ae&oe=614AA30E)
-
-
-Nisa was born in 1997 in **Istanbul, Turkey**. She grew up as a curious child and a fast learner. She got a full score in her national high school exam and attended **Robert College** which is a prestigious American high school in Istanbul. Nisa discovered her curiosity for other cultures and passion for developing a global outlook during her time at her international high school. She also played at the school orchestra as *a drummer* and performed in several gigs. She was the *cool* girl. During her studies, she attended a part time music academy  and managed to get **London College of Music** certificates for piano. She can now teach music as an *certified* piano teacher globally.
+I was born in 1997 in **Istanbul, Turkey**. I grew up as a curious child and a fast learner. I got a full score in her national high school exam and attended **Robert College** which is a prestigious American high school in Istanbul. I discovered my curiosity for other cultures and passion for developing a global outlook during my time at my international high school. I also played at the school orchestra as *a drummer* and performed in several gigs. I was the *cool* girl. During my studies, I attended a part time music academy  and managed to get **London College of Music** certificates for piano. I can now teach music as an *certified* piano teacher globally.
 
 
 
-After graduation, she studied **industrial engineering** at Koc University, Istanbul. She discovered her love for data analytics when she took her first statistics class. During summers, she did analytics internships at **Ford** and **Deloitte** and gained professional insights in the analytics area. She completed her exchange semester at **University of Warwick** and decided to continue her graduate studies in the UK. Finally, Nisa joined **London Business School** as a Masters student in **Analytics and Management**. She is especially looking forward to her **Applied Statistics with R** course. It is important to emphasize that Nisa is a well rounded person and has a *diverse* set of hobbies. 
+After graduation, I studied **industrial engineering** at Koc University, Istanbul. I discovered my love for data analytics when I took her first statistics class. During summers, I did analytics internships at **Ford** and **Deloitte** and gained professional insights in the analytics area. I completed my exchange semester at **University of Warwick** and decided to continue her graduate studies in the UK. Finally, I joined **London Business School** as a Masters student in **Analytics and Management**. I am especially looking forward to her **Applied Statistics with R** course. It is important to emphasize that I see myself as a well rounded person and has a *diverse* set of hobbies. 
 
-Nisa's favourite hobbies are as following:
+My favourite hobbies are as following:
 
 * Playing the drums and the piano
+```{r picture1, echo=FALSE, out.width="100%"}
+#knitr::include_graphics("/Users/nisabukeozer/Desktop/website9/static/img/blogs/graduation.JPG", error = FALSE)
+```
 * Swimming -*butterfly strokes are her favourite*- and casual kayaking
 * Painting on canvas and charcoal drawing
 * Learning languages
 * Books
 
-```{r picture1, echo=FALSE, out.width="100%"}
-knitr::include_graphics("/img/sunset2.JPG", error = FALSE)
-```
 
 
 

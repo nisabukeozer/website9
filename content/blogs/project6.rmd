@@ -5,12 +5,117 @@ categories:
 date: "2017-10-31T22:26:13-05:00"
 description: The schools I attended
 draft: false
-image: pic08.jpg
+image: alcohol.jpg
 keywords: ""
 slug: project6
-title: Project6
+title: Where Do People Drink The Most Beer, Wine And Spirits?
 ---
 
+```{r load-libraries, warning=FALSE, message=FALSE, echo=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(lubridate)
+library(fivethirtyeight)
+library(here)
+library(skimr)
+library(janitor)
+library(vroom)
+library(tidyquant)
+library(rvest) # to scrape wikipedia page
+library(skimr)
+library(ggplot2)
+```
 
-Hello 
-Please work
+
+
+Back in 2014, [fivethiryeight.com](https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/) published an article on alchohol consumption in different countries. The data `drinks` is available as part of the `fivethirtyeight` package. Make sure you have installed the `fivethirtyeight` package before proceeding.
+
+```{r, load_alcohol_data}
+library(fivethirtyeight)
+data(drinks)
+
+
+# or download directly
+# alcohol_direct <- read_csv("https://raw.githubusercontent.com/fivethirtyeight/data/master/alcohol-consumption/drinks.csv")
+
+```
+
+What are the variable types? Any missing values we should worry about?
+
+```{r glimpse_skim_data}
+skimr::skim(drinks)
+
+alcohol_data <- drinks
+
+```
+
+> TEAM ANSWER:
+
+The variable types are character and numeric. There are no missing values. There are 4 numeric and 1 character type variable.
+
+Make a plot that shows the top 25 beer consuming countries
+
+```{r beer_plot}
+
+top25_beer <- drinks %>%
+  slice_max(., order_by = beer_servings, n = 25)
+  
+
+ggplot(top25_beer,aes(y = reorder(country, beer_servings), x = beer_servings))+
+  geom_col()+
+  labs(x = "Beer Servings",
+       y = "Country",
+       title = "Top 25 Beer Consuming Countries")+
+  theme_bw()+
+  NULL
+  
+
+```
+
+Make a plot that shows the top 25 wine consuming countries
+
+```{r wine_plot}
+
+# YOUR CODE GOES HERE
+
+top25_wine<- drinks %>%
+  slice_max(.,order_by = wine_servings,n=25)
+
+ggplot(top25_wine, aes(y = reorder(country, wine_servings), x = wine_servings ))+
+  geom_col()+
+  labs(x = "Wine Servings",
+       y = "Country",
+       title = "Top 25 Wine Consuming Countries")+
+  theme_bw()+
+  NULL
+
+```
+
+Finally, make a plot that shows the top 25 spirit consuming countries
+
+```{r spirit_plot}
+# YOUR CODE GOES HERE
+
+top25_spirit<- drinks %>%
+  slice_max(.,order_by = spirit_servings,n=25)
+
+ggplot(top25_spirit, aes(y = reorder(country, spirit_servings), x = spirit_servings ))+
+  geom_col()+
+  labs(x = "Spirit Servings",
+       y = "Country",
+       title = "Top 25 Spirit Consuming Countries")+
+  theme_bw()+
+  NULL
+
+```
+
+What can you infer from these plots? Don't just explain what's in the graph, but speculate or tell a short story (1-2 paragraphs max).
+
+> TEAM ANSWER:
+
+The countries at the top of the list have high production of the given alcoholic beverage. Historic national connection to the given drink and national pride in its production seems to be an influencing factor in the choice of alcohol consumption. For example in Namibia the brewing industry is [regarded as a source of national pride](https://theconversation.com/beer-politics-and-identity-the-chequered-history-behind-namibian-brewing-success-155719).
+
+
+
+

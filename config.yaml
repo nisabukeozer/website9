@@ -93,8 +93,8 @@ params:
         title: Spielberg vs Burton 
         url: blogs/project1
       - image: brexit.jpg
-        subtitle: A Visualisation Challenge 
-        title: Brexit vs Political Affiliation
+        subtitle: Who voted to leave EU? 
+        title: Brexit Analysis - 
         url: blogs/project2
       - image: climate.JPG
         subtitle: In-depth Analysis of Temperature Anamolies
@@ -104,13 +104,13 @@ params:
         subtitle: bla bla
         title: Gapminder
         url: blogs/project4
-      - image: pic06.jpg
-        subtitle: bla
-        title: Project5
+      - image: youth.jpg
+        subtitle: Analysing High Schoolers Health Patterns 
+        title: Youth Risk Behavior Surveillance
         url: blogs/project5
-      - image: pic06.jpg
-        subtitle: bla 
-        title: Project6
+      - image: alcohol.jpg
+        subtitle: A simple yet fun analysis on alcohol popularity by country 
+        title: Where Do People Drink The Most Beer, Wine And Spirits?
         url: blogs/project6
  # two:
     #buttonText: Start Exploring

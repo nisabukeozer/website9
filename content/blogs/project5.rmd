@@ -5,12 +5,330 @@ categories:
 date: "2017-10-31T22:26:13-05:00"
 description: The schools I attended
 draft: false
-image: pic08.jpg
+image: youth.jpg
 keywords: ""
 slug: project5
-title: Project 5
+title: Youth Risk Behavior Surveillance 
 ---
 
+ 
+```{r load-libraries, warning = FALSE, message = FALSE, echo=FALSE}
+library(tidyverse)  # Load ggplot2, dplyr, and all the other tidyverse packages
+library(mosaic)
+library(ggthemes)
+library(GGally)
+library(readxl)
+library(here)
+library(skimr)
+library(janitor)
+library(broom)
+library(tidyquant)
+library(infer)
+library(openintro)
+```
 
-Hello 
-Please work
+
+
+Every two years, the Centers for Disease Control and Prevention conduct the [Youth Risk Behavior Surveillance System (YRBSS)](https://www.cdc.gov/healthyyouth/data/yrbs/index.htm) survey, where it takes data from high schoolers (9th through 12th grade), to analyze health patterns. You will work with a selected group of variables from a random sample of observations during one of the years the YRBSS was conducted.
+
+## Load the data
+
+This data is part of the `openintro` textbook and we can load and inspect it. There are observations on 13 different variables, some categorical and some numerical. The meaning of each variable can be found by bringing up the help file:
+
+?yrbss
+
+```{r}
+data(yrbss)
+glimpse(yrbss)
+yrbss %>% mutate(race = factor(race))
+
+skimr::skim(yrbss)
+```
+
+Before you carry on with your analysis, it's is always a good idea to check with `skimr::skim()` to get a feel for missing values, summary statistics of numerical variables, and a very rough histogram.
+
+## Exploratory Data Analysis
+
+You will first start with analyzing the `weight` of participants in kilograms. Using visualization and summary statistics, describe the distribution of weights. How many observations are we missing weights from?
+
+```{r, eda_on_weight}
+#number of missing values in the 'weight' column:
+sumna <- sum(is.na(yrbss['weight']))
+print(paste0("there are " , sumna ," missing values." ))
+
+#using mosaic's favstats
+favstats(~weight, data=yrbss)
+
+#as it is also apparent in the favstat's function output, there are 1004 missing values in the weight column. 
+
+#histogram of the weight distribution
+  ggplot(yrbss, aes(x=weight))+
+  geom_histogram(bindwidth=5, color ="black", fill = "white")+
+  labs (title = "Histogram of Weigth Distribution",
+        y = "Count",
+        x = "Weight (in kilograms)")+ 
+  theme_bw()+
+  geom_vline(aes(xintercept = mean(weight, na.rm = TRUE)), color="blue", linetype="dashed", size=1)+
+  NULL
+  
+#density plot of the weight distribution
+  ggplot(yrbss, aes(x=weight)) +
+  geom_density() +
+  labs (title = "Density Plot of Weight Distribution",
+        x = "Weight (in kilograms)")+
+  theme_bw()+
+  NULL
+
+
+```
+
+Next, consider the possible relationship between a high schooler’s weight and their physical activity. Plotting the data is a useful first step because it helps us quickly visualize trends, identify strong associations, and develop research questions.
+
+Let’s create a new variable in the dataframe `yrbss`, called `physical_3plus` , which will be `yes` if they are physically active for at least 3 days a week, and `no` otherwise. You may also want to calculate the number and % of those who are and are not active for more than 3 days. Use the `count()` function and see if you get the same results as `group_by()... summarise()`
+
+```{r, mutate_and_count}
+
+yrbss %>%
+  filter(!is.na(physically_active_7d))%>%
+  ggplot(aes(x = factor(physically_active_7d))) +
+  geom_boxplot(aes(y=weight))+
+  labs (title = "Distribution of Weight by Number of Active days in a week",
+        x = "Number of Active Days in a Week",
+        y = "weight (kg)") +
+  theme_bw()
+  
+  #adding the new column that shows if a student is physically active 3 or more days a week. 
+  physical <- yrbss %>% 
+    mutate(physical_3plus = case_when(physically_active_7d >= 3 ~ "yes",
+                                       physically_active_7d < 3 ~ "no"),
+          physical_3plus = factor(physical_3plus, levels = c("yes", "no")))  
+ 
+ count_physical <- physical %>% 
+   filter(!is.na(physical_3plus)) %>% 
+   count(physical_3plus) %>% 
+   mutate(prop = n/sum(n))
+ 
+ #5685, 2656 
+ 
+ prop.test(count_physical$n[2]	, count_physical$n[2] + count_physical$n[1])
+ 
+```
+Can you provide a 95% confidence interval for the population proportion of high schools that are *NOT* active 3 or more days per week?
+
+
+> TEAM ANSWER:
+
+The 95 percent confidence interval according to the prop.test function is from 0.3228978 to 0.3389583. 
+
+*data:  [ out of +count_physical$n out of count_physical$n[2]2 out of count_physical$n[1]
+X-squared = 1522, df = 1, p-value <2e-16
+alternative hypothesis: true p is not equal to 0.5
+95 percent confidence interval:
+ 0.323 0.339
+sample estimates:
+    p 
+0.331*
+
+Initial plotting of the data doesn't suggest a strong correlation between weekly physical activity levels and weight. 
+
+
+Make a boxplot of `physical_3plus` vs. `weight`. Is there a relationship between these two variables? What did you expect and why?
+
+```{r, boxplot}
+#removing rows that contain NAs from the physical table... 
+   physical <- physical %>% 
+   filter(!is.na(physical_3plus) & !is.na(weight))
+   
+#box plot of physical_3plus vs weight:
+  
+  ggplot(physical, aes(x=physical_3plus, y = weight)) +
+  geom_boxplot()+
+  labs (title = "Distribution of Weight, Based on weekly activity level",
+        x = "Working out 3 or more days: Yes or No",
+        y = "weight (kg)") +
+  theme_bw()
+
+  
+```
+
+> TEAM ANSWER:
+
+People who work out 3 days a week or more are slightly heavier on average. One might expect the opposite, but weight is not a great indicator of fitness levels as it varries widely with height, and the number of workout days might not indicate the intensity of the workouts either. We would expect a stronger negative correlation between bodyfat percentage and number of active days a week. 
+
+## Confidence Interval
+
+Boxplots show how the medians of the two distributions compare, but we can also compare the means of the distributions using either a confidence interval or a hypothesis test. Note that when we calculate the mean, SD, etc. weight in these groups using the mean function, we must ignore any missing values by setting the `na.rm = TRUE`.
+
+
+```{r, ci_using_formulas}
+
+set.seed(1234)
+#calculating CI using formulas:
+
+#physical_3plus == "yes
+ yes_result<- physical %>% 
+   filter(physical_3plus == "yes") %>% 
+   summarise( yes_mean = mean(weight, na.rm = TRUE),
+              yes_n = count(physical_3plus == "yes"),
+              yes_sd = sd(weight, na.rm = TRUE),
+              t_critical = qt(0.975, yes_n -1),
+              se_yes = yes_sd / sqrt(yes_n),
+              margin_of_error = t_critical * se_yes,
+              yes_low_CI= yes_mean - margin_of_error,
+              yes_high_CI= yes_mean + margin_of_error
+              )
+
+print(paste0("the confidence interval is ",  as.numeric(yes_result['yes_low_CI']), " - ", as.numeric(yes_result['yes_high_CI']) ))
+
+
+
+#we can get a very similar result using the bootstrap approach for confidence intervals by infer package:
+
+boot_dist1 <- physical %>% 
+   filter(physical_3plus == "yes") %>% 
+
+  specify(response = weight) %>%
+  # Generate bootstrap samples
+  generate(reps = 1000, type = "bootstrap") %>%
+  # Calculate mean of each bootstrap sample
+  calculate(stat = "mean")
+
+boot_dist1
+percentile_ci1 <- get_ci(boot_dist1, level = 0.95, type ="percentile") 
+
+#visualisation of the resulting bootstrap distribution and the CIs
+  visualize(boot_dist1) +
+  shade_ci(endpoints=percentile_ci1, fill="khaki") +
+  geom_vline(xintercept = yes_result$yes_low_CI, colour ="red") +
+  geom_vline(xintercept = yes_result$yes_high_CI, colour = "red") +
+  NULL
+  
+
+
+#physical_3plus == "no"
+no_result <-physical %>% 
+   filter(!is.na(physical_3plus)) %>%
+   filter(physical_3plus == "no") %>% 
+   summarise( no_mean = mean(weight, na.rm = TRUE),
+              no_n = count(physical_3plus == "no"),
+              no_sd = sd(weight, na.rm = TRUE),
+              t_critical = qt(0.975, no_n -1),
+              se_no= no_sd / sqrt(no_n),
+              margin_of_error = t_critical * se_no,
+              no_low_CI= no_mean - margin_of_error,
+              no_high_CI= no_mean + margin_of_error)
+
+print(paste0("the confidence interval is ",  as.numeric(no_result['no_low_CI']), " - ", as.numeric(no_result['no_high_CI']) ))
+
+#we can also get a very similar result using the bootstrap approach for confidence intervals by infer package:
+
+boot_dist2 <- physical %>% 
+   filter(!is.na(physical_3plus)) %>% 
+   filter(physical_3plus == "no") %>% 
+   specify(response = weight) %>%
+  # Generate bootstrap samples
+  generate(reps = 1000, type = "bootstrap") %>%
+  # Calculate mean of each bootstrap sample
+  calculate(stat = "mean")
+
+percentile_ci <- get_ci(boot_dist2, level = 0.95, type ="percentile") 
+
+#visualisation of the resulting bootstrap distribution and the CIs
+  visualize(boot_dist2) +
+  shade_ci(endpoints=percentile_ci, fill="khaki") +
+  geom_vline(xintercept = no_result$no_low_CI, colour ="red") +
+  geom_vline(xintercept = no_result$no_high_CI, colour = "red") +
+  labs(title="Simulation-Based Bootsrap Distribution for No Answers") +
+  NULL
+  
+
+
+   
+```
+
+There is an observed difference of about 1.77kg (68.44 - 66.67), and we notice that the two confidence intervals do not overlap. It seems that the difference is at least 95% statistically significant. Let us also conduct a hypothesis test.
+
+## Hypothesis test with formula
+
+Write the null and alternative hypotheses for testing whether mean weights are different for those who exercise at least 3 times a week and those who don’t.
+
+H0 = there is no difference in the weight of those who exercise 3 times a week and more compaed to those who do not. 
+h1 = there is a difference in the weight of those who exercise 3 times a week and more and those who do not.
+
+```{r, t_test_using_R}
+
+t.test(weight ~ physical_3plus, data = physical)
+
+
+```
+Since the T value is 5 we can reject the NULL hypothesis, which means that we statistically sufficient evidence to say that there is a difference in the mean weight of those who work out more than 3 days a week and those who don't.
+
+
+## Hypothesis test with `infer`
+
+
+Next, we will introduce a new function, `hypothesize`, that falls into the infer workflow. You will use this method for conducting hypothesis tests.
+
+But first, we need to initialize the test, which we will save as `obs_diff`.
+
+```{r, calc_obs_difference}
+obs_diff <- physical %>%
+  specify(weight ~ physical_3plus) %>%
+  calculate(stat = "diff in means", order = c("yes", "no"))
+
+obs_diff
+```
+
+
+Notice how you can use the functions specify and calculate again like you did for calculating confidence intervals. Here, though, the statistic you are searching for is the difference in means, with the order being yes - no != 0.
+
+After you have initialized the test, you need to simulate the test on the null distribution, which we will save as null.
+
+
+```{r, hypothesis_testing_using_infer_package}
+
+  null_dist <- physical %>%
+  # specify variables
+  specify(weight ~ physical_3plus) %>%
+  
+  # assume independence, i.e, there is no difference
+  hypothesize(null = "independence") %>%
+  
+  # generate 1000 reps, of type "permute"
+  generate(reps = 1000, type = "permute") %>%
+  
+  # calculate statistic of difference, namely "diff in means"
+  calculate(stat = "diff in means", order = c("yes", "no"))
+
+```
+
+
+Here, `hypothesize` is used to set the null hypothesis as a test for independence, i.e., that there is no difference between the two population means. In one sample cases, the null argument can be set to *point* to test a hypothesis relative to a point estimate.
+
+Also, note that the `type` argument within generate is set to permute, which is the argument when generating a null distribution for a hypothesis test.
+
+We can visualize this null distribution with the following code:
+
+```{r}
+ggplot(data = null_dist, aes(x = stat)) +
+  geom_histogram()
+
+```
+
+
+Now that the test is initialized and the null distribution formed, we can visualise to see how many of these null permutations have a difference of at least `obs_stat` of `r obs_diff %>% pull() %>% round(2)`.
+
+
+
+We can also calculate the p-value for your hypothesis test using the function `infer::get_p_value()`.
+
+```{r}
+
+null_dist %>% visualize() +
+  shade_p_value(obs_stat = obs_diff, direction = "two-sided")
+
+null_dist %>%
+  get_p_value(obs_stat = obs_diff, direction = "two_sided")
+
+```
+

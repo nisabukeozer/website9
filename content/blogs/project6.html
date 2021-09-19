@@ -5,14 +5,212 @@ categories:
 date: "2017-10-31T22:26:13-05:00"
 description: The schools I attended
 draft: false
-image: pic08.jpg
+image: alcohol.jpg
 keywords: ""
 slug: project6
-title: Project6
+title: Where Do People Drink The Most Beer, Wine And Spirits?
 ---
 
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
-<p>Hello
-Please work</p>
+<p>Back in 2014, <a href="https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/">fivethiryeight.com</a> published an article on alchohol consumption in different countries. The data <code>drinks</code> is available as part of the <code>fivethirtyeight</code> package. Make sure you have installed the <code>fivethirtyeight</code> package before proceeding.</p>
+<pre class="r"><code>library(fivethirtyeight)
+data(drinks)
+
+
+# or download directly
+# alcohol_direct &lt;- read_csv(&quot;https://raw.githubusercontent.com/fivethirtyeight/data/master/alcohol-consumption/drinks.csv&quot;)</code></pre>
+<p>What are the variable types? Any missing values we should worry about?</p>
+<pre class="r"><code>skimr::skim(drinks)</code></pre>
+<table>
+<caption>(#tab:glimpse_skim_data)Data summary</caption>
+<tbody>
+<tr class="odd">
+<td align="left">Name</td>
+<td align="left">drinks</td>
+</tr>
+<tr class="even">
+<td align="left">Number of rows</td>
+<td align="left">193</td>
+</tr>
+<tr class="odd">
+<td align="left">Number of columns</td>
+<td align="left">5</td>
+</tr>
+<tr class="even">
+<td align="left">_______________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Column type frequency:</td>
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">character</td>
+<td align="left">1</td>
+</tr>
+<tr class="odd">
+<td align="left">numeric</td>
+<td align="left">4</td>
+</tr>
+<tr class="even">
+<td align="left">________________________</td>
+<td align="left"></td>
+</tr>
+<tr class="odd">
+<td align="left">Group variables</td>
+<td align="left">None</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: character</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">min</th>
+<th align="right">max</th>
+<th align="right">empty</th>
+<th align="right">n_unique</th>
+<th align="right">whitespace</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">country</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">3</td>
+<td align="right">28</td>
+<td align="right">0</td>
+<td align="right">193</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Variable type: numeric</strong></p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">skim_variable</th>
+<th align="right">n_missing</th>
+<th align="right">complete_rate</th>
+<th align="right">mean</th>
+<th align="right">sd</th>
+<th align="right">p0</th>
+<th align="right">p25</th>
+<th align="right">p50</th>
+<th align="right">p75</th>
+<th align="right">p100</th>
+<th align="left">hist</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">beer_servings</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">106.16</td>
+<td align="right">101.14</td>
+<td align="right">0</td>
+<td align="right">20.0</td>
+<td align="right">76.0</td>
+<td align="right">188.0</td>
+<td align="right">376.0</td>
+<td align="left">▇▃▂▂▁</td>
+</tr>
+<tr class="even">
+<td align="left">spirit_servings</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">80.99</td>
+<td align="right">88.28</td>
+<td align="right">0</td>
+<td align="right">4.0</td>
+<td align="right">56.0</td>
+<td align="right">128.0</td>
+<td align="right">438.0</td>
+<td align="left">▇▃▂▁▁</td>
+</tr>
+<tr class="odd">
+<td align="left">wine_servings</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">49.45</td>
+<td align="right">79.70</td>
+<td align="right">0</td>
+<td align="right">1.0</td>
+<td align="right">8.0</td>
+<td align="right">59.0</td>
+<td align="right">370.0</td>
+<td align="left">▇▁▁▁▁</td>
+</tr>
+<tr class="even">
+<td align="left">total_litres_of_pure_alcohol</td>
+<td align="right">0</td>
+<td align="right">1</td>
+<td align="right">4.72</td>
+<td align="right">3.77</td>
+<td align="right">0</td>
+<td align="right">1.3</td>
+<td align="right">4.2</td>
+<td align="right">7.2</td>
+<td align="right">14.4</td>
+<td align="left">▇▃▅▃▁</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>alcohol_data &lt;- drinks</code></pre>
+<blockquote>
+<p>TEAM ANSWER:</p>
+</blockquote>
+<p>The variable types are character and numeric. There are no missing values. There are 4 numeric and 1 character type variable.</p>
+<p>Make a plot that shows the top 25 beer consuming countries</p>
+<pre class="r"><code>top25_beer &lt;- drinks %&gt;%
+  slice_max(., order_by = beer_servings, n = 25)
+  
+
+ggplot(top25_beer,aes(y = reorder(country, beer_servings), x = beer_servings))+
+  geom_col()+
+  labs(x = &quot;Beer Servings&quot;,
+       y = &quot;Country&quot;,
+       title = &quot;Top 25 Beer Consuming Countries&quot;)+
+  theme_bw()+
+  NULL</code></pre>
+<p><img src="/blogs/project6_files/figure-html/beer_plot-1.png" width="672" /></p>
+<p>Make a plot that shows the top 25 wine consuming countries</p>
+<pre class="r"><code># YOUR CODE GOES HERE
+
+top25_wine&lt;- drinks %&gt;%
+  slice_max(.,order_by = wine_servings,n=25)
+
+ggplot(top25_wine, aes(y = reorder(country, wine_servings), x = wine_servings ))+
+  geom_col()+
+  labs(x = &quot;Wine Servings&quot;,
+       y = &quot;Country&quot;,
+       title = &quot;Top 25 Wine Consuming Countries&quot;)+
+  theme_bw()+
+  NULL</code></pre>
+<p><img src="/blogs/project6_files/figure-html/wine_plot-1.png" width="672" /></p>
+<p>Finally, make a plot that shows the top 25 spirit consuming countries</p>
+<pre class="r"><code># YOUR CODE GOES HERE
+
+top25_spirit&lt;- drinks %&gt;%
+  slice_max(.,order_by = spirit_servings,n=25)
+
+ggplot(top25_spirit, aes(y = reorder(country, spirit_servings), x = spirit_servings ))+
+  geom_col()+
+  labs(x = &quot;Spirit Servings&quot;,
+       y = &quot;Country&quot;,
+       title = &quot;Top 25 Spirit Consuming Countries&quot;)+
+  theme_bw()+
+  NULL</code></pre>
+<p><img src="/blogs/project6_files/figure-html/spirit_plot-1.png" width="672" /></p>
+<p>What can you infer from these plots? Don’t just explain what’s in the graph, but speculate or tell a short story (1-2 paragraphs max).</p>
+<blockquote>
+<p>TEAM ANSWER:</p>
+</blockquote>
+<p>The countries at the top of the list have high production of the given alcoholic beverage. Historic national connection to the given drink and national pride in its production seems to be an influencing factor in the choice of alcohol consumption. For example in Namibia the brewing industry is <a href="https://theconversation.com/beer-politics-and-identity-the-chequered-history-behind-namibian-brewing-success-155719">regarded as a source of national pride</a>.</p>

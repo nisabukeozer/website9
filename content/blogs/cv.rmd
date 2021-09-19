@@ -3,20 +3,16 @@ categories:
 - ""
 - ""
 date: "2017-10-31T22:42:51-05:00"
-description: About me and my background
+description: Nisa Ozer, CV
 draft: false
-image: graduation.JPG
+image: cv.JPG
 keywords: ""
 slug: cv
-title: Nisa Buke Ozer
+title: CV
 ---
 
-**CV**
-
-
-
 ```{r picture1, echo=FALSE, out.width="100%"}
-knitr::include_graphics("/img/cv.JPG", error = FALSE)
+knitr::include_graphics("/Users/nisabukeozer/Desktop/website9/static/img/blogs/graduation.JPG", error = FALSE)
 ```
 
 
