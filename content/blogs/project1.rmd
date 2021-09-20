@@ -5,7 +5,7 @@ categories:
 date: "2017-10-31T22:26:09-05:00"
 description: Exploring whether the mean IMDB rating for Steven Spielberg and Tim Burton
 draft: false
-image: directors.jpg
+#image: directors.jpg
 keywords: ""
 slug: project1
 title: Hypothesis Testing with Spielberg and Burton
@@ -33,6 +33,10 @@ library(openintro)
 *H0* = *there is no difference between the mean IMBD ratings of Steven Spielberg and Tim Burton* \
 *H1* = *there is a difference between the mean IMBD ratings of Steven Spielberg and Tim Burton*
 
+
+```{r picture, echo=FALSE, out.width="100%"}
+knitr::include_graphics("/img/directors.jpg", error = FALSE)
+```
 First we need to load the data and take a look at its contents.
 ```{r}
 movies <- read_csv(here::here("data", "movies.csv"))
