@@ -59,9 +59,9 @@ params:
   image: ''
   name: Nisa Buke Ozer
   navigation:
-    button1:
-      - name: Download my CV
-        url: https://drive.google.com/file/d/1UEIIm3wBxLcyf9jEtmzsFnagS69pXtAr/view?usp=sharing
+    #button1:
+     # - name: Download my CV
+      #  url: https://drive.google.com/file/d/1UEIIm3wBxLcyf9jEtmzsFnagS69pXtAr/view?usp=sharing
     #button2:
     #  - name: Log In
      #   url: '#'
@@ -109,7 +109,6 @@ params:
         title: Youth Risk Behavior Surveillance
         url: blogs/project5
       - image: alcohol.jpg
-        subtitle: A simple yet fun analysis on alcohol popularity by country 
         title: Where Do People Drink The Most Beer, Wine And Spirits?
         url: blogs/project6
   two:
