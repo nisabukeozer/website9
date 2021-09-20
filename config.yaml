@@ -97,11 +97,11 @@ params:
         title: Brexit Analysis 
         url: blogs/project2
       - image: climate.JPG
-        subtitle: In-depth Analysis of Temperature Anamolies
+        subtitle: In-depth Analysis of Temperature Anamolies Over the Years
         title: Climate Change and Temperature Anamolies
         url: blogs/project3
       - image: gapminder.jpg
-        subtitle: bla bla
+        subtitle: The famous **gapminder** dataset has data on life expectancy, population, and GDP per capita for 142 countries from 1952 to 2007. 
         title: Gapminder
         url: blogs/project4
       - image: youth.jpg

@@ -27,9 +27,9 @@ library(skimr)
 library(ggplot2)
 ```
 
+**Aim:** To understand the alcohol consumption distribution among countries. (Language: **R**)
 
-
-Back in 2014, [fivethiryeight.com](https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/) published an article on alchohol consumption in different countries. The data `drinks` is available as part of the `fivethirtyeight` package. Make sure you have installed the `fivethirtyeight` package before proceeding.
+Back in 2014, [fivethiryeight.com](https://fivethirtyeight.com/features/dear-mona-followup-where-do-people-drink-the-most-beer-wine-and-spirits/) published an article on alchohol consumption in different countries. The data `drinks` is available as part of the `fivethirtyeight` package. 
 
 ```{r, load_alcohol_data}
 library(fivethirtyeight)
@@ -41,8 +41,7 @@ data(drinks)
 
 ```
 
-What are the variable types? Any missing values we should worry about?
-
+Analysing the variable types and missing values through the skim function. 
 ```{r glimpse_skim_data}
 skimr::skim(drinks)
 
@@ -50,11 +49,9 @@ alcohol_data <- drinks
 
 ```
 
-> TEAM ANSWER:
-
 The variable types are character and numeric. There are no missing values. There are 4 numeric and 1 character type variable.
 
-Make a plot that shows the top 25 beer consuming countries
+## A plot that shows the top 25 beer consuming countries
 
 ```{r beer_plot}
 
@@ -73,7 +70,7 @@ ggplot(top25_beer,aes(y = reorder(country, beer_servings), x = beer_servings))+
 
 ```
 
-Make a plot that shows the top 25 wine consuming countries
+## A plot that shows the top 25 wine consuming countries
 
 ```{r wine_plot}
 
@@ -92,13 +89,13 @@ ggplot(top25_wine, aes(y = reorder(country, wine_servings), x = wine_servings ))
 
 ```
 
-Finally, make a plot that shows the top 25 spirit consuming countries
+## A plot that shows the top 25 spirit consuming countries
 
 ```{r spirit_plot}
 # YOUR CODE GOES HERE
 
 top25_spirit<- drinks %>%
-  slice_max(.,order_by = spirit_servings,n=25)
+  slice_max(.,order_by = spirit_servings, n=25)
 
 ggplot(top25_spirit, aes(y = reorder(country, spirit_servings), x = spirit_servings ))+
   geom_col()+
@@ -110,9 +107,8 @@ ggplot(top25_spirit, aes(y = reorder(country, spirit_servings), x = spirit_servi
 
 ```
 
-What can you infer from these plots? Don't just explain what's in the graph, but speculate or tell a short story (1-2 paragraphs max).
+# What can we infer from these plots? 
 
-> TEAM ANSWER:
 
 The countries at the top of the list have high production of the given alcoholic beverage. Historic national connection to the given drink and national pride in its production seems to be an influencing factor in the choice of alcohol consumption. For example in Namibia the brewing industry is [regarded as a source of national pride](https://theconversation.com/beer-politics-and-identity-the-chequered-history-behind-namibian-brewing-success-155719).
 

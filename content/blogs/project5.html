@@ -14,10 +14,11 @@ title: Youth Risk Behavior Surveillance
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
-<p>Every two years, the Centers for Disease Control and Prevention conduct the <a href="https://www.cdc.gov/healthyyouth/data/yrbs/index.htm">Youth Risk Behavior Surveillance System (YRBSS)</a> survey, where it takes data from high schoolers (9th through 12th grade), to analyze health patterns. You will work with a selected group of variables from a random sample of observations during one of the years the YRBSS was conducted.</p>
-<div id="load-the-data" class="section level2">
-<h2>Load the data</h2>
-<p>This data is part of the <code>openintro</code> textbook and we can load and inspect it. There are observations on 13 different variables, some categorical and some numerical. The meaning of each variable can be found by bringing up the help file:</p>
+<p><strong>Aim:</strong>to analyse the health patterns of American high scholers (9th through 12th grade) using R libraries.</p>
+<p><strong>Data:</strong> Every two years, the Centers for Disease Control and Prevention conduct the <a href="https://www.cdc.gov/healthyyouth/data/yrbs/index.htm">Youth Risk Behavior Surveillance System (YRBSS)</a> survey, where it takes data from high schoolers (9th through 12th grade), to analyze health patterns.</p>
+<div id="loading-the-data" class="section level2">
+<h2>Loading the data</h2>
+<p>This data is part of the <code>openintro</code> textbook and we can load and inspect it.</p>
 <p>?yrbss</p>
 <pre class="r"><code>data(yrbss)
 glimpse(yrbss)</code></pre>
@@ -53,7 +54,7 @@ glimpse(yrbss)</code></pre>
 ## # … with 13,573 more rows, and 4 more variables: physically_active_7d &lt;int&gt;,
 ## #   hours_tv_per_school_day &lt;chr&gt;, strength_training_7d &lt;int&gt;,
 ## #   school_night_hours_sleep &lt;chr&gt;</code></pre>
-<pre class="r"><code>skimr::skim(yrbss)</code></pre>
+<pre class="r"><code>skimr::skim(yrbss) #to get a feel about the dataset</code></pre>
 <table>
 <caption><span id="tab:unnamed-chunk-1">Table 1: </span>Data summary</caption>
 <tbody>
@@ -277,11 +278,10 @@ glimpse(yrbss)</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Before you carry on with your analysis, it’s is always a good idea to check with <code>skimr::skim()</code> to get a feel for missing values, summary statistics of numerical variables, and a very rough histogram.</p>
 </div>
 <div id="exploratory-data-analysis" class="section level2">
 <h2>Exploratory Data Analysis</h2>
-<p>You will first start with analyzing the <code>weight</code> of participants in kilograms. Using visualization and summary statistics, describe the distribution of weights. How many observations are we missing weights from?</p>
+<p><strong>Starting out by analyzing the <code>weight</code> of participants in kilograms.</strong></p>
 <pre class="r"><code>#number of missing values in the &#39;weight&#39; column:
 sumna &lt;- sum(is.na(yrbss[&#39;weight&#39;]))
 print(paste0(&quot;there are &quot; , sumna ,&quot; missing values.&quot; ))</code></pre>
@@ -314,8 +314,8 @@ favstats(~weight, data=yrbss)</code></pre>
   NULL</code></pre>
 <pre><code>## Warning: Removed 1004 rows containing non-finite values (stat_density).</code></pre>
 <p><img src="/blogs/project5_files/figure-html/eda_on_weight-2.png" width="672" /></p>
-<p>Next, consider the possible relationship between a high schooler’s weight and their physical activity. Plotting the data is a useful first step because it helps us quickly visualize trends, identify strong associations, and develop research questions.</p>
-<p>Let’s create a new variable in the dataframe <code>yrbss</code>, called <code>physical_3plus</code> , which will be <code>yes</code> if they are physically active for at least 3 days a week, and <code>no</code> otherwise. You may also want to calculate the number and % of those who are and are not active for more than 3 days. Use the <code>count()</code> function and see if you get the same results as <code>group_by()... summarise()</code></p>
+<p><strong>Is there a relationship between a high schooler’s weight and their physical activity?</strong>
+By adding a new column that shows whether a student exercised more than 3 days a week or not, the relationship with exercises and non-exercises can be easily determined.</p>
 <pre class="r"><code>yrbss %&gt;%
   filter(!is.na(physically_active_7d))%&gt;%
   ggplot(aes(x = factor(physically_active_7d))) +
@@ -326,7 +326,7 @@ favstats(~weight, data=yrbss)</code></pre>
   theme_bw()</code></pre>
 <pre><code>## Warning: Removed 946 rows containing non-finite values (stat_boxplot).</code></pre>
 <p><img src="/blogs/project5_files/figure-html/mutate_and_count-1.png" width="672" /></p>
-<pre class="r"><code>  #adding the new column that shows if a student is physically active 3 or more days a week. 
+<pre class="r"><code>  #adding the new variable `physical_3plus` that shows if a student is physically active 3 or more days a week. 
   physical &lt;- yrbss %&gt;% 
     mutate(physical_3plus = case_when(physically_active_7d &gt;= 3 ~ &quot;yes&quot;,
                                        physically_active_7d &lt; 3 ~ &quot;no&quot;),
@@ -351,10 +351,7 @@ favstats(~weight, data=yrbss)</code></pre>
 ## sample estimates:
 ##        p 
 ## 0.330879</code></pre>
-<p>Can you provide a 95% confidence interval for the population proportion of high schools that are <em>NOT</em> active 3 or more days per week?</p>
-<blockquote>
-<p>TEAM ANSWER:</p>
-</blockquote>
+<p><strong>95% confidence interval for the population proportion of high schools that are <em>NOT</em> active 3 or more days per week?</strong></p>
 <p>The 95 percent confidence interval according to the prop.test function is from 0.3228978 to 0.3389583.</p>
 <p><em>data: [ out of +count_physical<span class="math inline">\(n out of count_physical\)</span>n[2]2 out of count_physical$n[1]
 X-squared = 1522, df = 1, p-value &lt;2e-16
@@ -365,7 +362,7 @@ sample estimates:
 p
 0.331</em></p>
 <p>Initial plotting of the data doesn’t suggest a strong correlation between weekly physical activity levels and weight.</p>
-<p>Make a boxplot of <code>physical_3plus</code> vs. <code>weight</code>. Is there a relationship between these two variables? What did you expect and why?</p>
+<p><strong>A boxplot of <code>physical_3plus</code> vs. <code>weight</code>. Is there a relationship between these two variables? </strong></p>
 <pre class="r"><code>#removing rows that contain NAs from the physical table... 
    physical &lt;- physical %&gt;% 
    filter(!is.na(physical_3plus) &amp; !is.na(weight))
@@ -379,9 +376,6 @@ p
         y = &quot;weight (kg)&quot;) +
   theme_bw()</code></pre>
 <p><img src="/blogs/project5_files/figure-html/boxplot-1.png" width="672" /></p>
-<blockquote>
-<p>TEAM ANSWER:</p>
-</blockquote>
 <p>People who work out 3 days a week or more are slightly heavier on average. One might expect the opposite, but weight is not a great indicator of fitness levels as it varries widely with height, and the number of workout days might not indicate the intensity of the workouts either. We would expect a stronger negative correlation between bodyfat percentage and number of active days a week.</p>
 </div>
 <div id="confidence-interval" class="section level2">
@@ -481,9 +475,9 @@ percentile_ci &lt;- get_ci(boot_dist2, level = 0.95, type =&quot;percentile&quot
 </div>
 <div id="hypothesis-test-with-formula" class="section level2">
 <h2>Hypothesis test with formula</h2>
-<p>Write the null and alternative hypotheses for testing whether mean weights are different for those who exercise at least 3 times a week and those who don’t.</p>
-<p>H0 = there is no difference in the weight of those who exercise 3 times a week and more compaed to those who do not.
-h1 = there is a difference in the weight of those who exercise 3 times a week and more and those who do not.</p>
+<p>Null and alternative hypothesis:
+H0 = there is no difference in the weight of those who exercise 3 times a week and more compared to those who do not.
+H1 = there is a difference in the weight of those who exercise 3 times a week and more and those who do not.</p>
 <pre class="r"><code>t.test(weight ~ physical_3plus, data = physical)</code></pre>
 <pre><code>## 
 ##  Welch Two Sample t-test
@@ -498,10 +492,8 @@ h1 = there is a difference in the weight of those who exercise 3 times a week an
 ##          68.44847          66.67389</code></pre>
 <p>Since the T value is 5 we can reject the NULL hypothesis, which means that we statistically sufficient evidence to say that there is a difference in the mean weight of those who work out more than 3 days a week and those who don’t.</p>
 </div>
-<div id="hypothesis-test-with-infer" class="section level2">
-<h2>Hypothesis test with <code>infer</code></h2>
-<p>Next, we will introduce a new function, <code>hypothesize</code>, that falls into the infer workflow. You will use this method for conducting hypothesis tests.</p>
-<p>But first, we need to initialize the test, which we will save as <code>obs_diff</code>.</p>
+<div id="hypothesis-test-with-infer-package" class="section level2">
+<h2>Hypothesis test with <code>infer</code> package</h2>
 <pre class="r"><code>obs_diff &lt;- physical %&gt;%
   specify(weight ~ physical_3plus) %&gt;%
   calculate(stat = &quot;diff in means&quot;, order = c(&quot;yes&quot;, &quot;no&quot;))
@@ -513,8 +505,7 @@ obs_diff</code></pre>
 ##    stat
 ##   &lt;dbl&gt;
 ## 1  1.77</code></pre>
-<p>Notice how you can use the functions specify and calculate again like you did for calculating confidence intervals. Here, though, the statistic you are searching for is the difference in means, with the order being yes - no != 0.</p>
-<p>After you have initialized the test, you need to simulate the test on the null distribution, which we will save as null.</p>
+<p><strong>Simulating the test on the null distribution, which we will save as null.</strong></p>
 <pre class="r"><code>  null_dist &lt;- physical %&gt;%
   # specify variables
   specify(weight ~ physical_3plus) %&gt;%
@@ -527,15 +518,12 @@ obs_diff</code></pre>
   
   # calculate statistic of difference, namely &quot;diff in means&quot;
   calculate(stat = &quot;diff in means&quot;, order = c(&quot;yes&quot;, &quot;no&quot;))</code></pre>
-<p>Here, <code>hypothesize</code> is used to set the null hypothesis as a test for independence, i.e., that there is no difference between the two population means. In one sample cases, the null argument can be set to <em>point</em> to test a hypothesis relative to a point estimate.</p>
-<p>Also, note that the <code>type</code> argument within generate is set to permute, which is the argument when generating a null distribution for a hypothesis test.</p>
 <p>We can visualize this null distribution with the following code:</p>
 <pre class="r"><code>ggplot(data = null_dist, aes(x = stat)) +
   geom_histogram()</code></pre>
 <pre><code>## `stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
 <p><img src="/blogs/project5_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>Now that the test is initialized and the null distribution formed, we can visualise to see how many of these null permutations have a difference of at least <code>obs_stat</code> of 1.77.</p>
-<p>We can also calculate the p-value for your hypothesis test using the function <code>infer::get_p_value()</code>.</p>
+<p>The p-value for your hypothesis test using the function <code>infer::get_p_value()</code>.</p>
 <pre class="r"><code>null_dist %&gt;% visualize() +
   shade_p_value(obs_stat = obs_diff, direction = &quot;two-sided&quot;)</code></pre>
 <p><img src="/blogs/project5_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
@@ -548,4 +536,8 @@ obs_diff</code></pre>
 ##   p_value
 ##     &lt;dbl&gt;
 ## 1       0</code></pre>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>Since p value is very small, we can reject the null hypothesis that there is no difference in the weight of those who exercise 3 times a week and more compaed to those who do not.</p>
 </div>

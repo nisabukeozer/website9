@@ -5,7 +5,7 @@ categories:
 date: "2017-10-31T22:26:13-05:00"
 description: The schools I attended
 draft: false
-image: pic08.jpg
+image: world.jpg
 keywords: ""
 slug: project4
 title: Gapminder Analysis
@@ -18,12 +18,13 @@ library(here)
 library(janitor)
 ```
 
-#`gapminder` country comparison
+# `gapminder` country comparison
 
-You have seen the `gapminder` dataset that has data on life expectancy, population, and GDP per capita for 142 countries from 1952 to 2007. To get a glimpse of the dataframe, namely to see the variable names, variable types, etc., we use the `glimpse` function. We also want to have a look at the first 20 rows of data.
+**Aim:** to analyse the data analyst's favourite data set: gapminder. This is my first serious R coding. 
 
+The famous **gapminder** dataset has data on life expectancy, population, and GDP per capita for 142 countries from 1952 to 2007. 
 ```{r}
-glimpse(gapminder)
+glimpse(gapminder) 
 
 head(gapminder, 20) # look at the first 20 rows of the dataframe
 
@@ -31,20 +32,17 @@ head(gapminder, 20) # look at the first 20 rows of the dataframe
 
 How did life expectancy has changed over the years for the `country` and the `continent` I come from?
 
-I have created the `country_data` and `continent_data` with the code below.
-
 ```{r}
 country_data <- gapminder %>% 
             filter(country == "Turkey") 
 
 head(country_data)
+
 continent_data <- gapminder %>% 
-            filter(continent == "Europe")
+            filter(continent == "Europe") #Turkey is registered under Europe before 2007
 
 head(continent_data)
 ```
-
-First, create a plot of life expectancy over time for the single country you chose. Map `year` on the x-axis, and `lifeExp` on the y-axis. You should also use `geom_point()` to see the actual data points and `geom_smooth(se = FALSE)` to plot the underlying trendlines. You need to remove the comments **\#** from the lines below for your code to run.
 
 
 ```{r, lifeExp_one_country}
@@ -56,7 +54,6 @@ plot1 <- ggplot(data = country_data , mapping = aes(x = year, y = lifeExp))+
 plot1
 ```
 
-Next we need to add a title. Create a new plot, or extend plot1, using the `labs()` function to add an informative title to the plot.
 
 ```{r, lifeExp_one_country_with_label}
  plot1<- plot1 +
@@ -69,7 +66,7 @@ Next we need to add a title. Create a new plot, or extend plot1, using the `labs
  plot1
 ```
 
-Secondly, produce a plot for all countries in the *continent* you come from. (Hint: map the `country` variable to the colour aesthetic. You also want to map `country` to the `group` aesthetic, so all points for each country are grouped together).
+Producing a plot for all countries in the *continent* I come from. 
 
 ```{r lifeExp_one_continent}
  ggplot(continent_data, mapping = aes(x = year , y = lifeExp , colour = country, group = country)) +
@@ -79,7 +76,7 @@ Secondly, produce a plot for all countries in the *continent* you come from. (Hi
 ```
 
 
-Finally, using the original `gapminder` data, produce a life expectancy over time graph, grouped (or faceted) by continent. We will remove all legends, adding the `theme(legend.position="none")` in the end of our ggplot.
+Producing a life expectancy over time graph, grouped by continent. 
 
 ```{r lifeExp_facet_by_continent}
  ggplot(gapminder , mapping = aes(x = year , y = lifeExp, colour = continent))+
@@ -90,7 +87,7 @@ Finally, using the original `gapminder` data, produce a life expectancy over tim
    NULL
 ```
 
-Given these trends, what can you say about life expectancy since 1952? Again, don't just say what's happening in the graph. Tell some sort of story and speculate about the differences in the patterns.
+##Conclusions 
 
 > Type your answer after this blockquote.
 

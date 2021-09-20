@@ -27,13 +27,13 @@ library(infer)
 library(openintro)
 ```
 
+**Aim:**to analyse the health patterns of American high scholers (9th through 12th grade) using R libraries. 
 
+**Data:** Every two years, the Centers for Disease Control and Prevention conduct the [Youth Risk Behavior Surveillance System (YRBSS)](https://www.cdc.gov/healthyyouth/data/yrbs/index.htm) survey, where it takes data from high schoolers (9th through 12th grade), to analyze health patterns. 
 
-Every two years, the Centers for Disease Control and Prevention conduct the [Youth Risk Behavior Surveillance System (YRBSS)](https://www.cdc.gov/healthyyouth/data/yrbs/index.htm) survey, where it takes data from high schoolers (9th through 12th grade), to analyze health patterns. You will work with a selected group of variables from a random sample of observations during one of the years the YRBSS was conducted.
+## Loading the data
 
-## Load the data
-
-This data is part of the `openintro` textbook and we can load and inspect it. There are observations on 13 different variables, some categorical and some numerical. The meaning of each variable can be found by bringing up the help file:
+This data is part of the `openintro` textbook and we can load and inspect it. 
 
 ?yrbss
 
@@ -42,14 +42,12 @@ data(yrbss)
 glimpse(yrbss)
 yrbss %>% mutate(race = factor(race))
 
-skimr::skim(yrbss)
+skimr::skim(yrbss) #to get a feel about the dataset
 ```
-
-Before you carry on with your analysis, it's is always a good idea to check with `skimr::skim()` to get a feel for missing values, summary statistics of numerical variables, and a very rough histogram.
 
 ## Exploratory Data Analysis
 
-You will first start with analyzing the `weight` of participants in kilograms. Using visualization and summary statistics, describe the distribution of weights. How many observations are we missing weights from?
+**Starting out by analyzing the `weight` of participants in kilograms.** 
 
 ```{r, eda_on_weight}
 #number of missing values in the 'weight' column:
@@ -82,10 +80,8 @@ favstats(~weight, data=yrbss)
 
 ```
 
-Next, consider the possible relationship between a high schooler’s weight and their physical activity. Plotting the data is a useful first step because it helps us quickly visualize trends, identify strong associations, and develop research questions.
-
-Let’s create a new variable in the dataframe `yrbss`, called `physical_3plus` , which will be `yes` if they are physically active for at least 3 days a week, and `no` otherwise. You may also want to calculate the number and % of those who are and are not active for more than 3 days. Use the `count()` function and see if you get the same results as `group_by()... summarise()`
-
+**Is there a relationship between a high schooler’s weight and their physical activity?**
+By adding a new column that shows whether a student exercised more than 3 days a week or not, the relationship with exercises and non-exercises can be easily determined. 
 ```{r, mutate_and_count}
 
 yrbss %>%
@@ -97,7 +93,7 @@ yrbss %>%
         y = "weight (kg)") +
   theme_bw()
   
-  #adding the new column that shows if a student is physically active 3 or more days a week. 
+  #adding the new variable `physical_3plus` that shows if a student is physically active 3 or more days a week. 
   physical <- yrbss %>% 
     mutate(physical_3plus = case_when(physically_active_7d >= 3 ~ "yes",
                                        physically_active_7d < 3 ~ "no"),
@@ -113,10 +109,7 @@ yrbss %>%
  prop.test(count_physical$n[2]	, count_physical$n[2] + count_physical$n[1])
  
 ```
-Can you provide a 95% confidence interval for the population proportion of high schools that are *NOT* active 3 or more days per week?
-
-
-> TEAM ANSWER:
+**95% confidence interval for the population proportion of high schools that are *NOT* active 3 or more days per week?**
 
 The 95 percent confidence interval according to the prop.test function is from 0.3228978 to 0.3389583. 
 
@@ -132,7 +125,7 @@ sample estimates:
 Initial plotting of the data doesn't suggest a strong correlation between weekly physical activity levels and weight. 
 
 
-Make a boxplot of `physical_3plus` vs. `weight`. Is there a relationship between these two variables? What did you expect and why?
+**A boxplot of `physical_3plus` vs. `weight`. Is there a relationship between these two variables? **
 
 ```{r, boxplot}
 #removing rows that contain NAs from the physical table... 
@@ -151,7 +144,6 @@ Make a boxplot of `physical_3plus` vs. `weight`. Is there a relationship between
   
 ```
 
-> TEAM ANSWER:
 
 People who work out 3 days a week or more are slightly heavier on average. One might expect the opposite, but weight is not a great indicator of fitness levels as it varries widely with height, and the number of workout days might not indicate the intensity of the workouts either. We would expect a stronger negative correlation between bodyfat percentage and number of active days a week. 
 
@@ -249,11 +241,9 @@ percentile_ci <- get_ci(boot_dist2, level = 0.95, type ="percentile")
 There is an observed difference of about 1.77kg (68.44 - 66.67), and we notice that the two confidence intervals do not overlap. It seems that the difference is at least 95% statistically significant. Let us also conduct a hypothesis test.
 
 ## Hypothesis test with formula
-
-Write the null and alternative hypotheses for testing whether mean weights are different for those who exercise at least 3 times a week and those who don’t.
-
-H0 = there is no difference in the weight of those who exercise 3 times a week and more compaed to those who do not. 
-h1 = there is a difference in the weight of those who exercise 3 times a week and more and those who do not.
+Null and alternative hypothesis: 
+H0 = there is no difference in the weight of those who exercise 3 times a week and more compared to those who do not. 
+H1 = there is a difference in the weight of those who exercise 3 times a week and more and those who do not.
 
 ```{r, t_test_using_R}
 
@@ -261,15 +251,11 @@ t.test(weight ~ physical_3plus, data = physical)
 
 
 ```
+
 Since the T value is 5 we can reject the NULL hypothesis, which means that we statistically sufficient evidence to say that there is a difference in the mean weight of those who work out more than 3 days a week and those who don't.
 
 
-## Hypothesis test with `infer`
-
-
-Next, we will introduce a new function, `hypothesize`, that falls into the infer workflow. You will use this method for conducting hypothesis tests.
-
-But first, we need to initialize the test, which we will save as `obs_diff`.
+## Hypothesis test with `infer` package
 
 ```{r, calc_obs_difference}
 obs_diff <- physical %>%
@@ -280,9 +266,8 @@ obs_diff
 ```
 
 
-Notice how you can use the functions specify and calculate again like you did for calculating confidence intervals. Here, though, the statistic you are searching for is the difference in means, with the order being yes - no != 0.
 
-After you have initialized the test, you need to simulate the test on the null distribution, which we will save as null.
+**Simulating the test on the null distribution, which we will save as null.**
 
 
 ```{r, hypothesis_testing_using_infer_package}
@@ -303,10 +288,6 @@ After you have initialized the test, you need to simulate the test on the null d
 ```
 
 
-Here, `hypothesize` is used to set the null hypothesis as a test for independence, i.e., that there is no difference between the two population means. In one sample cases, the null argument can be set to *point* to test a hypothesis relative to a point estimate.
-
-Also, note that the `type` argument within generate is set to permute, which is the argument when generating a null distribution for a hypothesis test.
-
 We can visualize this null distribution with the following code:
 
 ```{r}
@@ -316,11 +297,7 @@ ggplot(data = null_dist, aes(x = stat)) +
 ```
 
 
-Now that the test is initialized and the null distribution formed, we can visualise to see how many of these null permutations have a difference of at least `obs_stat` of `r obs_diff %>% pull() %>% round(2)`.
-
-
-
-We can also calculate the p-value for your hypothesis test using the function `infer::get_p_value()`.
+The p-value for your hypothesis test using the function `infer::get_p_value()`.
 
 ```{r}
 
@@ -332,3 +309,5 @@ null_dist %>%
 
 ```
 
+## Conclusion
+Since p value is very small, we can reject the null hypothesis that there is no difference in the weight of those who exercise 3 times a week and more compaed to those who do not.

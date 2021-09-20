@@ -5,7 +5,7 @@ categories:
 date: "2017-10-31T22:26:13-05:00"
 description: The schools I attended
 draft: false
-image: pic08.jpg
+image: world.jpg
 keywords: ""
 slug: project4
 title: Gapminder Analysis
@@ -14,9 +14,11 @@ title: Gapminder Analysis
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
-<p>#<code>gapminder</code> country comparison</p>
-<p>You have seen the <code>gapminder</code> dataset that has data on life expectancy, population, and GDP per capita for 142 countries from 1952 to 2007. To get a glimpse of the dataframe, namely to see the variable names, variable types, etc., we use the <code>glimpse</code> function. We also want to have a look at the first 20 rows of data.</p>
-<pre class="r"><code>glimpse(gapminder)</code></pre>
+<div id="gapminder-country-comparison" class="section level1">
+<h1><code>gapminder</code> country comparison</h1>
+<p><strong>Aim:</strong> to analyse the data analyst’s favourite data set: gapminder. This is my first serious R coding.</p>
+<p>The famous <strong>gapminder</strong> dataset has data on life expectancy, population, and GDP per capita for 142 countries from 1952 to 2007.</p>
+<pre class="r"><code>glimpse(gapminder) </code></pre>
 <pre><code>## Rows: 1,704
 ## Columns: 6
 ## $ country   &lt;fct&gt; &quot;Afghanistan&quot;, &quot;Afghanistan&quot;, &quot;Afghanistan&quot;, &quot;Afghanistan&quot;, …
@@ -50,7 +52,6 @@ title: Gapminder Analysis
 ## 19 Albania     Europe     1982    70.4  2780097     3631.
 ## 20 Albania     Europe     1987    72    3075321     3739.</code></pre>
 <p>How did life expectancy has changed over the years for the <code>country</code> and the <code>continent</code> I come from?</p>
-<p>I have created the <code>country_data</code> and <code>continent_data</code> with the code below.</p>
 <pre class="r"><code>country_data &lt;- gapminder %&gt;% 
             filter(country == &quot;Turkey&quot;) 
 
@@ -65,7 +66,7 @@ head(country_data)</code></pre>
 ## 5 Turkey  Europe     1972    57.0 37492953     3451.
 ## 6 Turkey  Europe     1977    59.5 42404033     4269.</code></pre>
 <pre class="r"><code>continent_data &lt;- gapminder %&gt;% 
-            filter(continent == &quot;Europe&quot;)
+            filter(continent == &quot;Europe&quot;) #Turkey is registered under Europe before 2007
 
 head(continent_data)</code></pre>
 <pre><code>## # A tibble: 6 × 6
@@ -77,7 +78,6 @@ head(continent_data)</code></pre>
 ## 4 Albania Europe     1967    66.2 1984060     2760.
 ## 5 Albania Europe     1972    67.7 2263554     3313.
 ## 6 Albania Europe     1977    68.9 2509048     3533.</code></pre>
-<p>First, create a plot of life expectancy over time for the single country you chose. Map <code>year</code> on the x-axis, and <code>lifeExp</code> on the y-axis. You should also use <code>geom_point()</code> to see the actual data points and <code>geom_smooth(se = FALSE)</code> to plot the underlying trendlines. You need to remove the comments <strong>#</strong> from the lines below for your code to run.</p>
 <pre class="r"><code>plot1 &lt;- ggplot(data = country_data , mapping = aes(x = year, y = lifeExp))+
    geom_point() +
    geom_smooth(se = FALSE)+
@@ -86,7 +86,6 @@ head(continent_data)</code></pre>
 plot1</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <p><img src="/blogs/project4_files/figure-html/lifeExp_one_country-1.png" width="672" /></p>
-<p>Next we need to add a title. Create a new plot, or extend plot1, using the <code>labs()</code> function to add an informative title to the plot.</p>
 <pre class="r"><code> plot1&lt;- plot1 +
    labs(title = &quot; Life Expactancy Over Time in Turkey &quot;,
        x = &quot; Year &quot;,
@@ -97,14 +96,14 @@ plot1</code></pre>
  plot1</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <p><img src="/blogs/project4_files/figure-html/lifeExp_one_country_with_label-1.png" width="672" /></p>
-<p>Secondly, produce a plot for all countries in the <em>continent</em> you come from. (Hint: map the <code>country</code> variable to the colour aesthetic. You also want to map <code>country</code> to the <code>group</code> aesthetic, so all points for each country are grouped together).</p>
+<p>Producing a plot for all countries in the <em>continent</em> I come from.</p>
 <pre class="r"><code> ggplot(continent_data, mapping = aes(x = year , y = lifeExp , colour = country, group = country)) +
    geom_point() + 
    geom_smooth(se = FALSE) +
    NULL</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <p><img src="/blogs/project4_files/figure-html/lifeExp_one_continent-1.png" width="672" /></p>
-<p>Finally, using the original <code>gapminder</code> data, produce a life expectancy over time graph, grouped (or faceted) by continent. We will remove all legends, adding the <code>theme(legend.position="none")</code> in the end of our ggplot.</p>
+<p>Producing a life expectancy over time graph, grouped by continent.</p>
 <pre class="r"><code> ggplot(gapminder , mapping = aes(x = year , y = lifeExp, colour = continent))+
    geom_point() +
    geom_smooth(se = FALSE) +
@@ -113,7 +112,7 @@ plot1</code></pre>
    NULL</code></pre>
 <pre><code>## `geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
 <p><img src="/blogs/project4_files/figure-html/lifeExp_facet_by_continent-1.png" width="672" /></p>
-<p>Given these trends, what can you say about life expectancy since 1952? Again, don’t just say what’s happening in the graph. Tell some sort of story and speculate about the differences in the patterns.</p>
+<p>##Conclusions</p>
 <blockquote>
 <p>Type your answer after this blockquote.</p>
 </blockquote>
@@ -142,4 +141,5 @@ plot1</code></pre>
 <h2>About the variations in each continent</h2>
 <p>Europe’s dataset is the one that caught my eye initially. There is not a very significant variance among the different European countries. <strong>But</strong> there seems to be an outlier country in the graph, and not surprisingly it is my country <strong>Turkey</strong>. It has been always debated whether Turkey belongs to Europe or Asia. Since this data set has been relatively not so new, it is recorded in Europe, as it was the case during my childhood before all the political unrest that started with the new government: aka <em>Geopolitics</em>. Since Turkey’s resources and the GDP are not as high as the other European countries, Turkey’s data points stick out. If the data recorders had kept recording data after the 2010s, Turkey would have been probably moved to Asia. And it might fit in well with the high variance of longevity in Asian countries. -Or we should all give up and create a Euroasia factor in the continent feature and add Turkey and Russia there. :-) -</p>
 <p>Asia shows the highest variance among all the continents, since the <strong>GDP</strong> is not as uniform throughout the Asian countries unlike the European countries. Americans and Africas also show a high variance since there are many different countries with varying GDPs and technologies advancements in Africa, Americas and Asia.</p>
+</div>
 </div>
