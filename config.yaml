@@ -59,9 +59,9 @@ params:
   image: ''
   name: Nisa Buke Ozer
   navigation:
-    #button1:
-    #  - name: Content
-     #   url: blogs
+    button1:
+      - name: Download my CV
+        url: https://drive.google.com/file/d/1UEIIm3wBxLcyf9jEtmzsFnagS69pXtAr/view?usp=sharing
     #button2:
     #  - name: Log In
      #   url: '#'
@@ -112,9 +112,11 @@ params:
         subtitle: A simple yet fun analysis on alcohol popularity by country 
         title: Where Do People Drink The Most Beer, Wine And Spirits?
         url: blogs/project6
- # two:
-    #buttonText: Start Exploring
-    #enable: yes
-    #subtitle: "My portfolio is diverse. "
-    #title: Massa libero
-    #url: blogs
+  two:
+    buttonText: Download CV
+    enable: yes
+    subtitle: Click here to access Nisa's CV as a PDF file
+    title: Download Nisa's CVs
+    url: https://drive.google.com/file/d/1UEIIm3wBxLcyf9jEtmzsFnagS69pXtAr/view?usp=sharing
+    
+   
