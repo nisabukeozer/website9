@@ -5,15 +5,13 @@ categories:
 date: "2017-10-31T22:42:51-05:00"
 description: Nisa Ozer, CV
 draft: false
-image: cv.JPG
+image: cv.jpg
 keywords: ""
 slug: cv
 title: CV
 ---
 
-```{r picture1, echo=FALSE, out.width="100%"}
-knitr::include_graphics("/Users/nisabukeozer/Desktop/website9/static/img/blogs/graduation.JPG", error = FALSE)
-```
+
 
 
 

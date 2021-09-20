@@ -5,10 +5,10 @@ categories:
 date: "2017-10-31T21:28:43-05:00"
 description: "In-depth Data Analysis on the Brexit Voters"
 draft: false
-image: brexitt.jpg
+image: brexit.jpg
 keywords: ""
 slug: project2
-title: Brexit Vote Analysis
+title: An Analysis on Brexit
 ---
 
 ```{r load-libraries, warning = FALSE, message = FALSE, echo=FALSE}
@@ -25,6 +25,8 @@ library(tidyquant)
 library(infer)
 library(openintro)
 ```
+**Aim:** to understand the background of voters that took place in the Brexit Referandum in 2016. (Language: **R**)
+
 We will first have a look at the results of the 2016 Brexit vote in the UK. 
 
 
@@ -33,9 +35,6 @@ The data comes from [Elliott Morris](https://www.thecrosstab.com/), who cleaned 
 Our main outcome variable (or y) is `leave_share`, which is the percent of votes cast in favour of Brexit, or leaving the EU. Each row is a UK [parliament constituency](https://en.wikipedia.org/wiki/United_Kingdom_Parliament_constituencies).
 
 To get a sense of the spread, or distribution, of the data, we can plot a histogram, a density plot, and the empirical cumulative distribution function of the leave % in all constituencies.
-
-And then I will create a political affiliation vs UK leave share vote graph. 
-
 
 **Loading and taking a quick look at the data**
 ```{r}
@@ -46,7 +45,7 @@ head(brexit_results) #displaying the first five rows of the data
 
 
 
-# Brexit vote analysis
+# Data Exploration
 
 
 ```{r brexit_histogram, warning=FALSE, message=FALSE}
@@ -61,7 +60,7 @@ histogram <- ggplot(brexit_results, aes(x = leave_share)) +
    NULL
 histogram
   
-# density plot-- think smoothed histogram
+# density plot
 density_plot <- ggplot(brexit_results, aes(x = leave_share)) +
   geom_density() 
 
@@ -89,7 +88,8 @@ ecdf2
   
 ```
 
-One common explanation for the Brexit outcome was fear of immigration and opposition to the EU's more open border policy. We can check the relationship (or correlation) between the proportion of native born residents (`born_in_uk`) in a constituency and its `leave_share`. To do this, let us get the correlation between the two variables
+One common explanation for the Brexit outcome was fear of immigration and opposition to the EU's more open border policy. We can check the relationship (or correlation) between the proportion of native born residents (`born_in_uk`) in a constituency and its `leave_share`. 
+
 
 ```{r brexit_immigration_correlation}
 brexit_results %>% 
@@ -119,12 +119,10 @@ immigrationPlot
 ```
 
 
-You have the code for the plots, I would like you to revisit all of them and use the `labs()` function to add an informative title, subtitle, and axes titles to all plots.
 
-What can you say about the relationship shown above? Again, don't just say what's happening in the graph. Tell some sort of story and speculate about the differences in the patterns.
- > Type your answer after, and outside, this blockquote.
+# What does this scatter plot tell us?
 
-First of all, the histogram of the leave share is slighlt left skewed, which means that voters more likely to vote in favour of leaving the EU. 
+First of all, the histogram of the leave share is slightly left skewed, which means that voters more likely to vote in favour of leaving the EU. 
 
 The 0.5 correlation between the leave share and born in the UK, shows that there is a  positive correlation between the percentage of pro-Brexit voters and percentage of UK born voters. According to the scatter plot of Leave Share vs Born UK, we also can see that there is an obvious positive trend between Born in UK and Leave Share. This makes sense since, people who do not support immigration are more likely to be UK born and bred people rather than immigrants. 
 
@@ -132,7 +130,12 @@ The upper left side of the graph is almost empty. This emptiness is kind of expe
 
 
 
+
+
 # Political Affiliation and Leave_Share Graph:
+
+As part of the final part of the analysis, it would be interesting to analyse the relationship between the political affiliation of the voters and whether they voted in favour of Brexit or not.  
+
 ```{r}
 brexit <- brexit_results %>% 
  
@@ -157,3 +160,7 @@ ggplot(long_brexit, aes(x = value, y = Leave_Share, color=party ) ) +
   scale_colour_manual(labels =  c("Conservative" ,"Labour", "Lib Dems", "UKIP", "Leave Share") ,
                       values = c("#0087DC","#E4003B", "#FAA61A", "#EFE600"))
 ```
+
+**What does this mean though?**
+
+It is fair to claim that the voters that support conservative political parties are more likely to have voted to leave EU, which makes sense. Since conservative British people are worried about the immigration inflow and they wanted to opted out of EU in order to prevent the freedom of movement from countries in the EU that they see not as high status.

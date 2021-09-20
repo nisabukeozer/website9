@@ -8,7 +8,7 @@ draft: false
 image: directors.jpg
 keywords: ""
 slug: project1
-title: Hypothesis testing for the difference between the mean IMDB ratings of Spielberg and Burton
+title: Hypothesis Testing with Spielberg and Burton
 ---
 
 
@@ -28,7 +28,7 @@ library(openintro)
 ```
 
 
-Exploring whether the mean IMDB rating for Steven Spielberg and Tim Burton
+**Aim:** Exploring whether the mean IMDB rating for Steven Spielberg and Tim Burton is different via Hypothesis Testing. (Language: **R**)
 
 *H0* = *there is no difference between the mean IMBD ratings of Steven Spielberg and Tim Burton* \
 *H1* = *there is a difference between the mean IMBD ratings of Steven Spielberg and Tim Burton*
@@ -62,7 +62,7 @@ compare <- movies %>%
    summarise(mean = round(mean(rating), 2),
               n = count(director),
               sd = sd(rating),
-              t_critical = qt(0.975, n - 1),
+              t_critical = qt(0.975, n - 1),  #calculates the t-critical
               se = sd / sqrt(n),
               margin_of_error = t_critical * se,
               low_CI= round(mean - margin_of_error, 2) ,
@@ -139,3 +139,6 @@ null_dist_movies %>%
   get_p_value(obs_stat = obs_diff, direction = "two_sided")
 ```
 
+# Conclusion
+
+According to the hypothesis testing, the p-value is smaller than 0.05 which means that it is safe to reject the null hypothesis that claims there is no difference in the mean ratings of Spielberg and Burton, which means that it is 95% likely that there is a difference between the mean ratings of these famous directors, and Spielberg is ahead of Burton in the IMDB race! 

@@ -21,13 +21,18 @@ After graduation, I studied **industrial engineering** at Koc University, Istanb
 My favourite hobbies are as following:
 
 * Playing the drums and the piano
-```{r picture1, echo=FALSE, out.width="100%"}
-#knitr::include_graphics("/Users/nisabukeozer/Desktop/website9/static/img/blogs/graduation.JPG", error = FALSE)
-```
-* Swimming -*butterfly strokes are her favourite*- and casual kayaking
+
+* Kayaking
+
+* Swimming, butterfly strokes are my favourite
+
+
 * Painting on canvas and charcoal drawing
+
 * Learning languages
+
 * Books
+
 
 
 

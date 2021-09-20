@@ -8,13 +8,13 @@ draft: false
 image: directors.jpg
 keywords: ""
 slug: project1
-title: Hypothesis testing for the difference between the mean IMDB ratings of Spielberg and Burton
+title: Hypothesis Testing with Spielberg and Burton
 ---
 
 <script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
-<p>Exploring whether the mean IMDB rating for Steven Spielberg and Tim Burton</p>
+<p><strong>Aim:</strong> Exploring whether the mean IMDB rating for Steven Spielberg and Tim Burton is different via Hypothesis Testing. (Language: <strong>R</strong>)</p>
 <p><em>H0</em> = <em>there is no difference between the mean IMBD ratings of Steven Spielberg and Tim Burton</em><br />
 <em>H1</em> = <em>there is a difference between the mean IMBD ratings of Steven Spielberg and Tim Burton</em></p>
 <p>First we need to load the data and take a look at its contents.</p>
@@ -62,7 +62,7 @@ compare &lt;- movies %&gt;%
    summarise(mean = round(mean(rating), 2),
               n = count(director),
               sd = sd(rating),
-              t_critical = qt(0.975, n - 1),
+              t_critical = qt(0.975, n - 1),  #calculates the t-critical
               se = sd / sqrt(n),
               margin_of_error = t_critical * se,
               low_CI= round(mean - margin_of_error, 2) ,
@@ -149,3 +149,7 @@ null_dist_movies %&gt;% visualize() +
 ##   p_value
 ##     &lt;dbl&gt;
 ## 1   0.008</code></pre>
+<div id="conclusion" class="section level1">
+<h1>Conclusion</h1>
+<p>According to the hypothesis testing, the p-value is smaller than 0.05 which means that it is safe to reject the null hypothesis that claims there is no difference in the mean ratings of Spielberg and Burton, which means that it is 95% likely that there is a difference between the mean ratings of these famous directors, and Spielberg is ahead of Burton in the IMDB race!</p>
+</div>
