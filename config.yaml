@@ -8,7 +8,7 @@ params:
   banner: 
     buttonText: Start Exploring
     subtitle: |-
-       Here you can check out my projects portfolio that focus on analytics and optimisation
+       My portfolio that focus on data analytics and optimisation projects
     title: Welcome to my analytics portfolio!
   blog: {}
   contact:
