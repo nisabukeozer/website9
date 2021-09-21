@@ -109,6 +109,7 @@ params:
         title: Youth Risk Behavior Surveillance
         url: blogs/project5
       - image: alcohol.jpg
+        subtitle: Data analysis on alcohol preference by country
         title: Where Do People Drink The Most Beer, Wine And Spirits?
         url: blogs/project6
   two:
