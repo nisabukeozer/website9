@@ -59,9 +59,9 @@ params:
   image: ''
   name: Nisa Buke Ozer
   navigation:
-    #button1:
-     # - name: Download my CV
-      #  url: https://drive.google.com/file/d/1UEIIm3wBxLcyf9jEtmzsFnagS69pXtAr/view?usp=sharing
+    button1:
+      - name: Download my CV
+        url: https://drive.google.com/file/d/1UEIIm3wBxLcyf9jEtmzsFnagS69pXtAr/view?usp=sharing
     #button2:
     #  - name: Log In
      #   url: '#'
@@ -101,7 +101,7 @@ params:
         title: Climate Change and Temperature Anamolies
         url: blogs/project3
       - image: gapminder.jpg
-        subtitle: The famous **gapminder** dataset has data on life expectancy, population, and GDP per capita for 142 countries from 1952 to 2007. 
+        subtitle: The famous *gapminder* dataset has data on life expectancy, population, and GDP per capita for 142 countries from 1952 to 2007. 
         title: Gapminder
         url: blogs/project4
       - image: youth.jpg
@@ -113,10 +113,11 @@ params:
         title: Where Do People Drink The Most Beer, Wine And Spirits?
         url: blogs/project6
   two:
-    buttonText: Download CV
+    buttonText: Click here
     enable: yes
-    subtitle: Click here to access Nisa's CV as a PDF file
-    title: Download Nisa's CVs
-    url: https://drive.google.com/file/d/1UEIIm3wBxLcyf9jEtmzsFnagS69pXtAr/view?usp=sharing
+    subtitle: Financial Risk Analysis for Customer Segmentation project for the factoring department at Tam Finance using logistic regression. (Industrial engineering graduation project, team of 4)  
+    title: Check out this Big Data Consultancy Project I worked on  (Python)  
+    url:https://drive.google.com/file/d/1HXlp-sUxWh87Z-41YVQTLH8AFsXVWWTI/view?usp=sharing
+    
     
    
